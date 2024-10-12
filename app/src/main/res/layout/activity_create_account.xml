@@ -1,0 +1,104 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo_sem_fundo"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insira_info"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:textStyle="normal"
+        android:textColor="@color/black"
+        />
+
+    <EditText
+        android:id="@+id/etNome"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:hint="@string/nome"
+        android:background="@drawable/borda"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp"
+        />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:hint="@string/email"
+        android:background="@drawable/borda"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp"
+        />
+
+    <EditText
+        android:id="@+id/etSenha"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:hint="@string/senha"
+        android:background="@drawable/borda"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp"
+        />
+
+    <EditText
+        android:id="@+id/etConfirmarSenha"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:hint="@string/confirmar_senha"
+        android:background="@drawable/borda"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp"
+        />
+
+    <Button
+        android:id="@+id/btnCadastrar"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/cadastrar"
+        android:textColor="@color/black"
+        android:background="@drawable/borda"
+        android:backgroundTint="@color/corPrincipal"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btnVoltar"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/voltar"
+        android:textColor="@color/black"
+        android:background="@drawable/borda"
+        android:backgroundTint="@color/corPrincipal"
+        android:layout_marginTop="30dp"
+       />
+
+</LinearLayout>

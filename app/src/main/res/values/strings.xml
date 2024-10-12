@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CampusConnect</string>
+    <string name="realizar_login">Realize seu Login</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="logar">Logar</string>
+    <string name="nao_possui_conta">Ainda não possui conta?\nCadastre-se aqui</string>
+    <string name="insira_info">Insira suas informações nos\n campos abaixo</string>
+    <string name="nome">Nome Completo</string>
+    <string name="confirmar_senha">Confirmar Senha</string>
+    <string name="voltar">Voltar</string>
+    <string name="cadastrar">Cadastrar</string>
+
+
+</resources>
