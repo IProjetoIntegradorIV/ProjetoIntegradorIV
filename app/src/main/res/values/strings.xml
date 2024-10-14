@@ -11,6 +11,11 @@
     <string name="confirmar_senha">Confirmar Senha</string>
     <string name="voltar">Voltar</string>
     <string name="cadastrar">Cadastrar</string>
+    <string name="altere_sua_senha_abaixo">Altere sua senha abaixo:</string>
+    <string name="por_favor_digite_seu_e_mail">Por favor, digite seu e-mail</string>
+    <string name="enviar">Enviar</string>
+    <string name="nova_senha">Nova Senha</string>
+    <string name="alterar">Alterar</string>
 
 
 </resources>

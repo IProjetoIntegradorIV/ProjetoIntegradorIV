@@ -14,46 +14,51 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/insira_info"
+        android:text="@string/altere_sua_senha_abaixo"
         android:layout_gravity="center"
         android:textSize="20sp"
         android:textStyle="normal"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
 
-    <EditText
-        android:id="@+id/etNome"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:hint="@string/nome"
-        android:background="@drawable/borda"
-        android:layout_marginTop="30dp"
-        android:drawableEnd="@drawable/ic_person"
+    <TextView
+        android:id="@+id/txt_informar_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:paddingStart="15dp"
-        android:paddingEnd="10dp"
-        android:drawablePadding="10dp"
-        />
+        android:layout_marginTop="50dp"
+        android:text="@string/por_favor_digite_seu_e_mail"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="350dp"
+        android:id="@+id/digite_seu_email"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:hint="@string/email"
         android:background="@drawable/borda"
-        android:layout_marginTop="20dp"
-        android:inputType="textEmailAddress"
         android:drawableEnd="@drawable/ic_email"
+        android:layout_marginTop="30dp"
+        android:inputType="textEmailAddress"
         android:layout_gravity="center"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
+
         />
 
+    <Button
+        android:id="@+id/btnEnviar"
+        android:layout_width="90dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/borda"
+        android:backgroundTint="@color/corPrincipal"
+        android:text="@string/enviar"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -63,18 +68,18 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etSenha"
-            android:layout_width="350dp"
+            android:id="@+id/etNovaSenha"
+            android:layout_width="200dp"
             android:layout_height="50dp"
-            android:hint="@string/senha"
+            android:hint="@string/nova_senha"
             android:background="@drawable/borda"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:textColorHint="@color/black"
             android:textColor="@color/black"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -88,47 +93,43 @@
 
         <EditText
             android:id="@+id/etConfirmarSenha"
-            android:layout_width="350dp"
+            android:layout_width="200dp"
             android:layout_height="50dp"
             android:hint="@string/confirmar_senha"
             android:background="@drawable/borda"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:textColorHint="@color/black"
             android:textColor="@color/black"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnCadastrar"
-        android:layout_width="200dp"
+        android:id="@+id/btnAlterarSenha"
+        android:layout_width="90dp"
         android:layout_height="50dp"
-        android:text="@string/cadastrar"
-        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:background="@drawable/borda"
         android:backgroundTint="@color/corPrincipal"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:text="@string/alterar"
+        android:textColor="@color/black"
         android:textStyle="bold"/>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
 
     <Button
         android:id="@+id/btnVoltar"
-        android:layout_width="100dp"
+        android:layout_width="90dp"
         android:layout_height="50dp"
         android:text="@string/voltar"
         android:textColor="@color/black"
         android:background="@drawable/borda"
         android:backgroundTint="@color/corPrincipal"
         android:layout_marginTop="30dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
 </LinearLayout>

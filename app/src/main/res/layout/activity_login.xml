@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -27,25 +27,40 @@
         android:layout_height="50dp"
         android:hint="@string/email"
         android:background="@drawable/borda"
+        android:drawableEnd="@drawable/ic_email"
         android:layout_marginTop="70dp"
+        android:inputType="textEmailAddress"
         android:layout_gravity="center"
         android:textColorHint="@color/black"
         android:textColor="@color/black"
-        android:paddingLeft="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="10dp"
+        android:drawablePadding="10dp"
         />
 
-    <EditText
-        android:id="@+id/etSenha"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:hint="@string/senha"
-        android:background="@drawable/borda"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:paddingLeft="15dp"
-        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/etSenha"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:hint="@string/senha"
+            android:background="@drawable/borda"
+            android:inputType="textPassword"
+            app:endIconMode="password_toggle"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:paddingLeft="15dp"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/etEsqueci"
@@ -67,7 +82,7 @@
         android:backgroundTint="@color/corPrincipal"
         android:layout_gravity="center"
         android:layout_marginTop="70dp"
-        />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/etCadastro"
