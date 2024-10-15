@@ -31,10 +31,10 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/digite_seu_email"
+        android:id="@+id/txt_email_esqueci_senha"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:hint="@string/email"
+        android:hint="@string/xxxxx_gmail_com"
         android:background="@drawable/borda"
         android:drawableEnd="@drawable/ic_email"
         android:layout_marginTop="30dp"
@@ -45,7 +45,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
-
+        android:drawableTint="@color/yellow"
         />
 
     <Button
@@ -68,7 +68,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etNovaSenha"
+            android:id="@+id/txt_nova_senha"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:hint="@string/nova_senha"
@@ -92,7 +92,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etConfirmarSenha"
+            android:id="@+id/txt_confirmar_senha"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:hint="@string/confirmar_senha"

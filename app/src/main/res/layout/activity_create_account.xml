@@ -35,13 +35,14 @@
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
+        android:drawableTint="@color/yellow"
         />
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:hint="@string/email"
+        android:hint="@string/xxxxx_gmail_com"
         android:background="@drawable/borda"
         android:layout_marginTop="20dp"
         android:inputType="textEmailAddress"
@@ -52,6 +53,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
+        android:drawableTint="@color/yellow"
         />
 
 

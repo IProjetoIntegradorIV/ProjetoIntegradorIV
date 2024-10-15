@@ -36,6 +36,7 @@
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
+        android:drawableTint="@color/yellow"
         />
 
     <com.google.android.material.textfield.TextInputLayout
