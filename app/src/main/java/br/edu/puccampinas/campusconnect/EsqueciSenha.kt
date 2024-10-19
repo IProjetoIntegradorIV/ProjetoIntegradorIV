@@ -1,4 +1,4 @@
-package br.edu.puccampinas.campusconnect
+/*package br.edu.puccampinas.campusconnect
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -113,3 +113,4 @@ class EsqueciSenha : AppCompatActivity() {
         Toast.makeText(this, "E-mail de verificação enviado para $email", Toast.LENGTH_SHORT).show()
     }
 }
+*/

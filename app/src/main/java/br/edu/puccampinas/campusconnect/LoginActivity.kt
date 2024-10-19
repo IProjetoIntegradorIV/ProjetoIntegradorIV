@@ -19,12 +19,10 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.etEsqueci.setOnClickListener {
-            EsqueciSenha()
-        }
+
 
         binding.etCadastro.setOnClickListener {
-            CreateAccountActivity()
+            navegarCreateAccount()
         }
 
         binding.btnLogar.setOnClickListener { view ->
@@ -95,10 +93,13 @@ class LoginActivity : AppCompatActivity() {
          */
     }
 
+    /*
     private fun navegarEsqueciSenha(){
         val intent = Intent(this, EsqueciSenha::class.java)
         startActivity(intent)
     }
+    */
+
 
     private fun navegarCreateAccount(){
         val intent = Intent(this, CreateAccountActivity::class.java)

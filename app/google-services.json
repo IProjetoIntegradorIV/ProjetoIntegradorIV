@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "328389238367",
+    "project_id": "fitjourney-edabc",
+    "storage_bucket": "fitjourney-edabc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328389238367:android:479250f501ad62fe3c85ea",
+        "android_client_info": {
+          "package_name": "br.edu.puccampinas.fitjourney"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAH3N1hIMsh1bcHrtyOmxXu454liXEHXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

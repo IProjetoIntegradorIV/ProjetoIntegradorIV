@@ -5,15 +5,26 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.databinding.ActivityCreateAccountBinding
-
+import br.edu.puccampinas.campusconnect.model.Parceiro
+import br.edu.puccampinas.campusconnect.model.PedidoDeRegistro
+import br.edu.puccampinas.campusconnect.model.PedidoParaSair
+import br.edu.puccampinas.campusconnect.model.Resultado
+import java.io.ByteArrayInputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.net.InetSocketAddress
+import java.net.Socket
 
 class CreateAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateAccountBinding
-    // private val firestore = FirebaseFirestore.getInstance()
-    // private val auth = FirebaseAuth.getInstance()
+    private var socket: Socket? = null
+    private var inputStream: ObjectInputStream? = null
+    private var outputStream: ObjectOutputStream? = null
+    private var parceiro: Parceiro? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,11 +32,11 @@ class CreateAccountActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnVoltar.setOnClickListener {
-            LoginActivity()
+            navigateToLoginActivity()
         }
 
         binding.btnCadastrar.setOnClickListener {
-            LoginActivity()
+            cadastrarPessoa()
         }
     }
 
@@ -76,49 +87,116 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
-        /* Aqui é para adicionar a pessoa no banco de dados
+        sendToServer(nomeCompleto, email, senha)
+    }
 
-        auth.createUserWithEmailAndPassword(email, senha)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    val uid = user?.uid
+    private fun sendToServer(nome: String, email: String, senha: String) {
+        Thread {
+            try {
+                // Conectando ao servidor
+                socket = Socket()
+                socket?.connect(InetSocketAddress("192.168.168.102", 4000), 10000)
 
-                    val pessoa = hashMapOf(
-                        "nomeCompleto" to nomeCompleto,
-                        "email" to email,
-                        "gerente" to false
-                    )
+                if (socket?.isConnected == true) {
+                    outputStream = ObjectOutputStream(socket!!.getOutputStream())
+                    inputStream = ObjectInputStream(socket!!.getInputStream())
 
-                    uid?.let {
-                        firestore.collection("pessoas").document(it).set(pessoa)
-                            .addOnSuccessListener {
-                                Toast.makeText(
-                                    this,
-                                    "Cadastro realizado com sucesso!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    val intent = Intent(this, LoginActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, 2000)
+                    // Criar o Parceiro com os streams
+                    parceiro = Parceiro(socket!!, inputStream!!, outputStream!!)
+
+                    // Envia os dados de cadastro
+                    val pedidoDeRegistro = PedidoDeRegistro(nome, email, senha)
+                    parceiro?.receba(pedidoDeRegistro)
+
+
+                    // Recebe a resposta do servidor
+                    val resposta = parceiro?.envie()
+
+                    // Log de confirmação de envio
+                    Log.d("CreateAccountActivity", "Resposta do servidor: $resposta")
+
+                    // Verifica se a resposta é um Resultado
+                    if (resposta is Resultado) {
+                        // Se for um Resultado, verifica a mensagem
+                        if (resposta.valorResultante == "Dados recebidos e inseridos com sucesso!") {
+                            runOnUiThread {
+                                Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
                             }
-                            .addOnFailureListener { e ->
-                                Toast.makeText(
-                                    this,
-                                    "Erro ao salvar dados: ${e.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                navigateToLoginActivity()
+                            }, 2000)
+                        } else {
+                            runOnUiThread {
+                                Toast.makeText(this, "Erro: ${resposta.valorResultante}", Toast.LENGTH_SHORT).show()
                             }
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(this, "Resposta inesperada do servidor", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Erro ao cadastrar: ${task.exception?.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    runOnUiThread {
+                        Toast.makeText(this, "Erro ao conectar ao servidor", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }*/
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this, "Erro de conexão: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                try {
+                    // Certifique-se de que todos os recursos sejam fechados
+                    parceiro?.receba(PedidoParaSair())
+                    outputStream?.close()
+                    inputStream?.close()
+                    socket?.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()
+    }
+
+
+    // Função para ler a resposta do servidor com tratamento de EOFException
+    private fun readServerResponse(inputStream: ObjectInputStream?): Resultado? {
+        return try {
+            val buffer = ByteArray(1024)
+            val bytesRead = inputStream?.read(buffer)
+            if (bytesRead != null && bytesRead > 0) {
+                val resposta = ObjectInputStream(ByteArrayInputStream(buffer)).readObject() as? Resultado
+                Log.d("CreateAccountActivity", "Resposta recebida: $resposta")
+                resposta
+            } else {
+                Log.e("CreateAccountActivity", "Nenhuma resposta do servidor.")
+                null
+            }
+        } catch (e: java.io.EOFException) {
+            Log.e("CreateAccountActivity", "Erro de EOF: resposta não recebida ou conexão fechada")
+            runOnUiThread {
+                Toast.makeText(this, "Erro ao receber resposta do servidor", Toast.LENGTH_SHORT).show()
+            }
+            null
+        } catch (e: Exception) {
+            Log.e("CreateAccountActivity", "Erro ao ler resposta do servidor: ${e.message}")
+            null
+        }
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            socket?.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
