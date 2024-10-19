@@ -5,62 +5,115 @@
     android:orientation="vertical"
     android:background="@color/white">
 
+    <TextView
+        android:id="@+id/seta_voltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_voltar"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:drawableTint="@color/blue"/>
+
     <ImageView
-        android:layout_width="400dp"
-        android:layout_height="200dp"
+        android:id="@+id/img_logo"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         android:src="@drawable/logo_sem_fundo"
-        android:layout_gravity="center"/>
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"/>
+
+    <TextView
+        android:id="@+id/ic_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cadastra_se"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:drawableStart="@drawable/ic_login"
+        android:layout_marginStart="30dp"
+        android:drawableTint="@color/yellow"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/insira_info"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:textColor="@color/black"
-        />
+        android:text="@string/cadastre_se_com_suas_informa_es_abaixo"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/blue"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/nome"
+        android:textSize="17sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/etNome"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:hint="@string/nome"
+        android:hint="@string/digite_seu_nome_completo"
         android:background="@drawable/borda"
-        android:layout_marginTop="30dp"
-        android:drawableEnd="@drawable/ic_person"
+        android:textSize="15sp"
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/ic_person"
         android:layout_gravity="center"
-        android:textColorHint="@color/black"
+        android:textColorHint="@color/gray"
         android:textColor="@color/black"
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
-        android:drawableTint="@color/yellow"
+        android:drawableTint="@color/blue"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/email"
+        android:textSize="17sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="350dp"
         android:layout_height="50dp"
-        android:hint="@string/xxxxx_gmail_com"
+        android:hint="@string/digite_seu_e_mail"
         android:background="@drawable/borda"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
+        android:textSize="15sp"
         android:inputType="textEmailAddress"
-        android:drawableEnd="@drawable/ic_email"
+        android:drawableStart="@drawable/ic_email"
         android:layout_gravity="center"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/gray"
         android:paddingStart="15dp"
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
-        android:drawableTint="@color/yellow"
+        android:drawableTint="@color/blue"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/senha"
+        android:textSize="17sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         app:passwordToggleEnabled="true">
 
@@ -68,23 +121,35 @@
             android:id="@+id/etSenha"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:hint="@string/senha"
+            android:hint="@string/digite_sua_senha"
+            android:textSize="15sp"
             android:background="@drawable/borda"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
-            android:layout_marginTop="30dp"
             android:layout_gravity="center"
-            android:textColorHint="@color/black"
-            android:textColor="@color/black"
+            android:drawableStart="@drawable/ic_cadeado"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/gray"
+            android:drawableTint="@color/blue"
             android:paddingLeft="15dp"
-            />
+            android:paddingStart="15dp"
+            android:drawablePadding="10dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/confirmar_senha"
+        android:textSize="17sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         app:passwordToggleEnabled="true">
 
@@ -92,16 +157,19 @@
             android:id="@+id/etConfirmarSenha"
             android:layout_width="350dp"
             android:layout_height="50dp"
-            android:hint="@string/confirmar_senha"
+            android:hint="@string/confirme_sua_senha"
+            android:textSize="15sp"
             android:background="@drawable/borda"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
-            android:layout_marginTop="30dp"
             android:layout_gravity="center"
-            android:textColorHint="@color/black"
-            android:textColor="@color/black"
+            android:drawableStart="@drawable/ic_cadeado"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/gray"
+            android:drawableTint="@color/blue"
             android:paddingLeft="15dp"
-            />
+            android:paddingStart="15dp"
+            android:drawablePadding="10dp"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,27 +178,11 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="@string/cadastrar"
-        android:textColor="@color/black"
+        android:textColor="@color/blue"
         android:background="@drawable/borda"
-        android:backgroundTint="@color/corPrincipal"
+        android:backgroundTint="@color/yellow"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold"/>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <Button
-        android:id="@+id/btnVoltar"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="@string/voltar"
-        android:textColor="@color/black"
-        android:background="@drawable/borda"
-        android:backgroundTint="@color/corPrincipal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"/>
 
 </LinearLayout>

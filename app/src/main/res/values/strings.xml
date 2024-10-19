@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">CampusConnect</string>
-    <string name="realizar_login">Realize seu Login</string>
-    <string name="email">Email</string>
+    <string name="email">E-mail</string>
     <string name="senha">Senha</string>
     <string name="esqueci_senha">Esqueci minha senha</string>
     <string name="logar">Logar</string>
@@ -17,6 +16,23 @@
     <string name="nova_senha">Nova Senha</string>
     <string name="alterar">Alterar</string>
     <string name="xxxxx_gmail_com">xxxx@gmail.com</string>
+    <string name="voc_est_conectado_ao_campus">Você está conectado ao campus</string>
+    <string name="fa_a_seu_login_com_uma_das_contas_abaixo">Faça seu login com uma das contas abaixo</string>
+    <string name="entrar_com_google">Entrar com Google</string>
+    <string name="entrar_com_e_mail_e_senha">Entrar com e-mail e senha</string>
+    <string name="n_o_tem_uma_conta_cadastre_se">Não tem uma conta? Cadastre-se</string>
+    <string name="fa_a_seu_login">Faça seu login</string>
+    <string name="entre_com_as_suas_informa_es_de_cadastro">Entre com as suas informações de cadastro.</string>
+    <string name="digite_sua_senha">Digite sua senha</string>
+    <string name="digite_seu_e_mail">Digite seu E-mail</string>
+    <string name="entre_com_as_suas_informa_es_de_login">Entre com as suas informações de login</string>
+    <string name="cadastra_se">Cadastra-se</string>
+    <string name="cadastre_se_com_suas_informa_es_abaixo">Cadastre-se com suas informações abaixo.</string>
+    <string name="digite_seu_nome_completo">Digite seu nome completo</string>
+    <string name="confirme_sua_senha">Confirme sua senha</string>
+    <string name="esqueci_minha_senha">Esqueci minha senha</string>
+    <string name="informe_seu_e_mail_para_recupera_o_de_senha">Informe seu e-mail para recuperação de senha.</string>
+    <string name="digite_sua_nova_senha">Digite sua nova senha</string>
 
 
 </resources>

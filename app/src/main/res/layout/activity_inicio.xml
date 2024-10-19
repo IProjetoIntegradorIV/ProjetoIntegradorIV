@@ -1,0 +1,93 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="165dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/logo_sem_fundo" />
+
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voc_est_conectado_ao_campus"
+            android:textSize="22sp"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:layout_marginBottom="70dp"/>
+
+
+        <TextView
+            android:id="@+id/tvInstructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fa_a_seu_login_com_uma_das_contas_abaixo"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/blue"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
+
+
+        <Button
+            android:id="@+id/btnLoginGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/white"
+            android:drawableStart="@drawable/img"
+            android:text="@string/entrar_com_google"
+            android:textColor="@color/black"
+            android:textSize="12sp"/>
+
+        <Button
+            android:id="@+id/btnLoginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/entrar_com_e_mail_e_senha"
+            android:drawableStart="@drawable/ic_email"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:drawableTint="@color/blue"
+            android:textSize="12sp"/>
+
+
+        <TextView
+            android:id="@+id/cadastrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/n_o_tem_uma_conta_cadastre_se"
+            android:textColor="@color/yellow"
+            android:textSize="14sp"
+            android:layout_marginTop="90dp"
+            android:gravity="center"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+</LinearLayout>

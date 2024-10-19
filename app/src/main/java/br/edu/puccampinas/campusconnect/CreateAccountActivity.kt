@@ -31,8 +31,8 @@ class CreateAccountActivity : AppCompatActivity() {
         binding = ActivityCreateAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnVoltar.setOnClickListener {
-            navigateToLoginActivity()
+        binding.setaVoltar.setOnClickListener {
+            Voltar()
         }
 
         binding.btnCadastrar.setOnClickListener {
@@ -198,5 +198,10 @@ class CreateAccountActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun Voltar(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

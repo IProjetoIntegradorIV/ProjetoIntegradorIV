@@ -18,11 +18,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
-        binding.etCadastro.setOnClickListener {
-            navegarCreateAccount()
+        binding.setaVoltar.setOnClickListener {
+            voltar()
         }
 
         binding.btnLogar.setOnClickListener { view ->
@@ -101,12 +98,12 @@ class LoginActivity : AppCompatActivity() {
     */
 
 
-    private fun navegarCreateAccount(){
-        val intent = Intent(this, CreateAccountActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun navegarTelaPrincipal(){
         //
+    }
+
+    private fun voltar(){
+        val intent = Intent(this, Inicio::class.java)
+        startActivity(intent)
     }
 }

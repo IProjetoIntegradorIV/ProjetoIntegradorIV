@@ -1,4 +1,4 @@
-/*package br.edu.puccampinas.campusconnect
+package br.edu.puccampinas.campusconnect
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -29,33 +29,33 @@ class EsqueciSenha : AppCompatActivity() {
             // colocar a classe que faz com que receba o email
         }
 
-        binding.btnVoltar.setOnClickListener {
-            LoginActivity()
+        binding.setaVoltar.setOnClickListener {
+            voltar()
         }
 
         binding.btnAlterarSenha.setOnClickListener {
-            val againEmail = binding.txtEmailEsqueciSenha.text.toString()
-            val novaSenha = binding.txtNovaSenha.text.toString()
-            val confirmarSenha = binding.txtConfirmarSenha.text.toString()
+            val againEmail = binding.etEmailEsqueciSenha.text.toString()
+            val novaSenha = binding.etNovaSenha.text.toString()
+            val confirmarSenha = binding.etConfirmarSenha.text.toString()
 
             when {
                 againEmail.isEmpty() -> {
-                    binding.txtEmailEsqueciSenha.error = "Digite seu Email!"
+                    binding.etEmailEsqueciSenha.error = "Digite seu Email!"
                 }
                 !againEmail.contains("@gmail.com") -> {
-                    binding.txtEmailEsqueciSenha.error = "Email inválido!"
+                    binding.etEmailEsqueciSenha.error = "Email inválido!"
                 }
                 novaSenha.isEmpty() -> {
-                    binding.txtNovaSenha.error = "Digite sua nova senha!"
+                    binding.etNovaSenha.error = "Digite sua nova senha!"
                 }
                 novaSenha.length <= 5 -> {
-                    binding.txtNovaSenha.error = "A senha precisa ter no mínimo 6 caracteres!"
+                    binding.etNovaSenha.error = "A senha precisa ter no mínimo 6 caracteres!"
                 }
                 confirmarSenha.isEmpty() -> {
-                    binding.txtConfirmarSenha.error = "Confirme sua senha!"
+                    binding.etConfirmarSenha.error = "Confirme sua senha!"
                 }
                 confirmarSenha != novaSenha -> {
-                    binding.txtConfirmarSenha.error = "As senhas não se coincidem!"
+                    binding.etConfirmarSenha.error = "As senhas não se coincidem!"
                 }
             }
         }
@@ -80,15 +80,15 @@ class EsqueciSenha : AppCompatActivity() {
     }
 
     private fun enviarEmailDeVerificacao() {
-        val email = binding.txtEmailEsqueciSenha.text.toString()
+        val email = binding.etEmailEsqueciSenha.text.toString()
 
         if (email.isEmpty()) {
-            binding.txtEmailEsqueciSenha.error = "Digite seu e-mail!"
+            binding.etEmailEsqueciSenha.error = "Digite seu e-mail!"
             return
         }
 
         if (!email.contains("@")) {
-            binding.txtEmailEsqueciSenha.error = "E-mail inválido!"
+            binding.etEmailEsqueciSenha.error = "E-mail inválido!"
             return
         }
 
@@ -113,4 +113,4 @@ class EsqueciSenha : AppCompatActivity() {
         Toast.makeText(this, "E-mail de verificação enviado para $email", Toast.LENGTH_SHORT).show()
     }
 }
-*/
+
