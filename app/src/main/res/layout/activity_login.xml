@@ -36,6 +36,7 @@
         android:drawableTint="@color/yellow"/>
 
     <TextView
+        android:id="@+id/cadastro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/entre_com_as_suas_informa_es_de_cadastro"

@@ -21,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
         binding.setaVoltar.setOnClickListener {
             voltar()
         }
-
         binding.btnLogar.setOnClickListener { view ->
 
             val email = binding.etEmail.text.toString()
