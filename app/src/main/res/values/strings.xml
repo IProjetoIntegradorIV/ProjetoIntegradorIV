@@ -33,6 +33,19 @@
     <string name="esqueci_minha_senha">Esqueci minha senha</string>
     <string name="informe_seu_e_mail_para_recupera_o_de_senha">Informe seu e-mail para recuperação de senha.</string>
     <string name="digite_sua_nova_senha">Digite sua nova senha</string>
+    <string name="nome_do_estabelecimento">Nome do estabelecimento</string>
+    <string name="descri_o">Descrição</string>
+    <string name="aberto_08_00_18_00">Aberto: 08:00 - 18:00</string>
+    <string name="produtos">Produtos</string>
+    <string name="nome_do_produto">Nome do produto</string>
+    <string name="senha_atual">Senha Atual</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="underline">____________________________________</string>
+    <string name="pre_o_r_40_00">Preço: R$40,00</string>
+    <string name="pre_o_r_25_00">Preço: R$25,00</string>
+    <string name="pre_o_r_20_00">Preço: R$20,00</string>
+    <string name="pre_o_r_6_00">Preço: R$6,00</string>
+    <string name="pre_o_r_35_00">Preço: R$ 35,00</string>
 
 
 </resources>
