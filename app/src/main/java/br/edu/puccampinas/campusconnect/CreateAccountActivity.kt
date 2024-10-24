@@ -9,10 +9,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.databinding.ActivityCreateAccountBinding
-import br.edu.puccampinas.campusconnect.model.Parceiro
-import br.edu.puccampinas.campusconnect.model.PedidoDeRegistro
-import br.edu.puccampinas.campusconnect.model.PedidoParaSair
-import br.edu.puccampinas.campusconnect.model.Resultado
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -95,7 +91,7 @@ class CreateAccountActivity : AppCompatActivity() {
             try {
                 // Conectando ao servidor
                 socket = Socket()
-                socket?.connect(InetSocketAddress("192.168.168.102", 4000), 10000)
+                socket?.connect(InetSocketAddress("localhost", 4000), 10000)
 
                 if (socket?.isConnected == true) {
                     outputStream = ObjectOutputStream(socket!!.getOutputStream())
@@ -147,7 +143,6 @@ class CreateAccountActivity : AppCompatActivity() {
                 }
             } finally {
                 try {
-                    // Certifique-se de que todos os recursos sejam fechados
                     parceiro?.receba(PedidoParaSair())
                     outputStream?.close()
                     inputStream?.close()
@@ -157,32 +152,6 @@ class CreateAccountActivity : AppCompatActivity() {
                 }
             }
         }.start()
-    }
-
-
-    // Função para ler a resposta do servidor com tratamento de EOFException
-    private fun readServerResponse(inputStream: ObjectInputStream?): Resultado? {
-        return try {
-            val buffer = ByteArray(1024)
-            val bytesRead = inputStream?.read(buffer)
-            if (bytesRead != null && bytesRead > 0) {
-                val resposta = ObjectInputStream(ByteArrayInputStream(buffer)).readObject() as? Resultado
-                Log.d("CreateAccountActivity", "Resposta recebida: $resposta")
-                resposta
-            } else {
-                Log.e("CreateAccountActivity", "Nenhuma resposta do servidor.")
-                null
-            }
-        } catch (e: java.io.EOFException) {
-            Log.e("CreateAccountActivity", "Erro de EOF: resposta não recebida ou conexão fechada")
-            runOnUiThread {
-                Toast.makeText(this, "Erro ao receber resposta do servidor", Toast.LENGTH_SHORT).show()
-            }
-            null
-        } catch (e: Exception) {
-            Log.e("CreateAccountActivity", "Erro ao ler resposta do servidor: ${e.message}")
-            null
-        }
     }
 
     private fun navigateToLoginActivity() {
@@ -201,7 +170,7 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun Voltar(){
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, Inicio::class.java)
         startActivity(intent)
     }
 }

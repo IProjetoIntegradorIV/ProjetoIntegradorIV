@@ -1,4 +1,4 @@
-package br.edu.puccampinas.campusconnect
+/*package br.edu.puccampinas.campusconnect
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -125,3 +125,4 @@ class EsqueciSenha : AppCompatActivity() {
     }
 }
 
+*/

@@ -1,6 +1,6 @@
-package br.edu.puccampinas.campusconnect.model;
+package br.edu.puccampinas.campusconnect;
 
-public class Resultado extends Comunicado{
+public class Resultado extends Comunicado {
     private String valorResultante;
 
     public Resultado(String valorResultante){

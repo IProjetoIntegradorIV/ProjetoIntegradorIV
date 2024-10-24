@@ -33,7 +33,6 @@
     <string name="esqueci_minha_senha">Esqueci minha senha</string>
     <string name="informe_seu_e_mail_para_recupera_o_de_senha">Informe seu e-mail para recuperação de senha.</string>
     <string name="digite_sua_nova_senha">Digite sua nova senha</string>
-    <string name="voce_e">Você é?</string>
-    <string name="escolha_qual_o_tipo_da_conta">Escolha qual o tipo da conta</string>
+
 
 </resources>

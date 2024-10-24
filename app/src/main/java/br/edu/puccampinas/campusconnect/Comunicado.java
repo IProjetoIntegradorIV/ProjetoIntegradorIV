@@ -1,4 +1,4 @@
-package br.edu.puccampinas.campusconnect.model;
+package br.edu.puccampinas.campusconnect;
 
 import java.io.*;
 

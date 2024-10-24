@@ -1,6 +1,6 @@
-package br.edu.puccampinas.campusconnect.model;
+package br.edu.puccampinas.campusconnect;
 
-public class PedidoDeRegistro extends Comunicado{
+public class PedidoDeRegistro extends Comunicado {
     private String nome;
     private String email;
     private String senha;
@@ -28,3 +28,4 @@ public class PedidoDeRegistro extends Comunicado{
         return (""+this.nome+this.email+this.senha);
     }
 }
+
