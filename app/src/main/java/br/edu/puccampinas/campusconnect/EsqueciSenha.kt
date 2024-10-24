@@ -41,36 +41,44 @@ class EsqueciSenha : AppCompatActivity() {
             when {
                 againEmail.isEmpty() -> {
                     binding.etEmailEsqueciSenha.error = "Digite seu Email!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
                 !againEmail.contains("@gmail.com") -> {
                     binding.etEmailEsqueciSenha.error = "Email inválido!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
                 novaSenha.isEmpty() -> {
                     binding.etNovaSenha.error = "Digite sua nova senha!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
                 novaSenha.length <= 5 -> {
                     binding.etNovaSenha.error = "A senha precisa ter no mínimo 6 caracteres!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
                 confirmarSenha.isEmpty() -> {
                     binding.etConfirmarSenha.error = "Confirme sua senha!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
                 confirmarSenha != novaSenha -> {
                     binding.etConfirmarSenha.error = "As senhas não se coincidem!"
+                    binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
                 }
             }
         }
     }
 
     private fun alterar(view: View) {
-        // val progressBar = binding.progessBar
-        // progressBar.visibility = View.VISIBLE
+        val progressBar = binding.progressBar
+        progressBar.visibility = View.VISIBLE
 
         binding.btnAlterarSenha.isEnabled = false
         binding.btnAlterarSenha.setTextColor(Color.parseColor("#FFFFFF"))
 
         Handler(Looper.getMainLooper()).postDelayed({
             val snackbar = Snackbar.make(view, "Senha alterada com sucesso!", Snackbar.LENGTH_SHORT)
+            binding.etNovaSenha.setTextColor(Color.parseColor("#34A853"))
             snackbar.show()
+            progressBar.visibility = View.GONE
         }, 3000)
     }
 
@@ -84,11 +92,13 @@ class EsqueciSenha : AppCompatActivity() {
 
         if (email.isEmpty()) {
             binding.etEmailEsqueciSenha.error = "Digite seu e-mail!"
+            binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
             return
         }
 
         if (!email.contains("@")) {
             binding.etEmailEsqueciSenha.error = "E-mail inválido!"
+            binding.etEmailEsqueciSenha.setTextColor(Color.parseColor("#EB4335"))
             return
         }
 
@@ -111,6 +121,7 @@ class EsqueciSenha : AppCompatActivity() {
             }
         // Para simulação, apenas mostramos um Toast
         Toast.makeText(this, "E-mail de verificação enviado para $email", Toast.LENGTH_SHORT).show()
+        binding.etNovaSenha.setTextColor(Color.parseColor("#34A853"))
     }
 }
 

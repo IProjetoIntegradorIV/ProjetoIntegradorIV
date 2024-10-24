@@ -19,7 +19,7 @@
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:src="@drawable/logo_sem_fundo"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"/>
 
     <TextView
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/email"
         android:textSize="17sp"
         android:textColor="@color/yellow"
@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/senha"
         android:textSize="17sp"
         android:textColor="@color/yellow"
@@ -182,7 +182,7 @@
         android:background="@drawable/borda"
         android:backgroundTint="@color/yellow"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:textStyle="bold"/>
 
 </LinearLayout>
