@@ -46,6 +46,32 @@
     <string name="pre_o_r_20_00">Preço: R$20,00</string>
     <string name="pre_o_r_6_00">Preço: R$6,00</string>
     <string name="pre_o_r_35_00">Preço: R$ 35,00</string>
+    <string name="title_activity_tela_produto">TelaProduto</string>
+    <string name="desc_prod">Descrição do produto</string>
+    <string name="nota">Nota</string>
+    <string name="comentarios">Comentários</string>
+    <string name="adicionar_comentario">ADICIONAR COMENTÁRIO</string>
+    <string name="adicionar_coment">ADICIONAR COMENTÁRIO</string>
+    <string name="desc_prod2">Descrição do produto</string>
+    <string name="nota2">Nota</string>
+    <string name="comentarios2">Comentários</string>
+    <string name="adicionar_comentario2">ADICIONAR COMENTÁRIO</string>
+    <string name="adicionar_coment2">ADICIONAR COMENTÁRIO</string>
+    <string name="desc_prod3">Descrição do produto</string>
+    <string name="nota3">Nota</string>
+    <string name="comentarios3">Comentários</string>
+    <string name="adicionar_comentario3">ADICIONAR COMENTÁRIO</string>
+    <string name="adicionar_coment3">ADICIONAR COMENTÁRIO</string>
+    <string name="desc_prod4">Descrição do produto</string>
+    <string name="nota4">Nota</string>
+    <string name="comentarios4">Comentários</string>
+    <string name="adicionar_comentario4">ADICIONAR COMENTÁRIO</string>
+    <string name="adicionar_coment4">ADICIONAR COMENTÁRIO</string>
+    <string name="desc_prod5">Descrição do produto</string>
+    <string name="nota5">Nota</string>
+    <string name="comentarios5">Comentários</string>
+    <string name="adicionar_comentario5">ADICIONAR COMENTÁRIO</string>
+    <string name="adicionar_coment5">ADICIONAR COMENTÁRIO</string>
 
 
 </resources>

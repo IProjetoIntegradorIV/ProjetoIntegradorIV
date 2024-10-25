@@ -1,0 +1,150 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <!-- Voltar Button -->
+    <TextView
+        android:id="@+id/seta_voltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/ic_voltar"
+        app:drawableTint="@color/blue"
+        />
+
+    <!-- Produto Image -->
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="center"
+        android:src="@drawable/img_torta"
+        app:shapeAppearanceOverlay="@style/CircleImage"
+        android:scaleType="centerCrop" />
+
+    <!-- Heart Icon on Top of Image -->
+    <ImageView
+        android:id="@+id/heart_icon"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="-60dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="end"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_heart_outline" />
+
+    <!-- Informações do Produto -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="start"
+        android:text="@string/nome_do_produto"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/desc_prod"
+        android:textColor="@color/gray"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/pre_o_r_20_00"
+        android:textColor="@color/gray"
+        android:textSize="13sp" />
+
+
+
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginStart="350dp"
+        android:src="@drawable/ic_heart_outfilled2"
+        android:background="?attr/selectableItemBackground" />
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="-22dp"
+        android:layout_marginStart="320dp"
+        android:text="@string/nota"
+        android:textColor="@color/gray"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="5dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/underline"
+        android:textColor="@color/gray"
+        android:textSize="130sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="start"
+        android:text="@string/comentarios"
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="0dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/perfil" />
+
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="-40dp"
+        android:background="@drawable/blue_border"
+        android:text="@string/adicionar_comentario"
+        android:textColor="@color/black"
+        android:textSize="10dp" />
+
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="0dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/perfil" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="-40dp"
+        android:background="@drawable/blue_border"
+        android:text="@string/adicionar_comentario"
+        android:textColor="@color/black"
+        android:textSize="10dp" />
+
+
+
+</LinearLayout>
+
+
