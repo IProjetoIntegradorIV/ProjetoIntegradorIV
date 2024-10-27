@@ -8,7 +8,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
+import br.edu.puccampinas.campusconnect.data.model.User
+import br.edu.puccampinas.campusconnect.data.network.ApiService
+import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityCreateAccountBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -27,22 +34,22 @@ class CreateAccountActivity : AppCompatActivity() {
         binding = ActivityCreateAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.setaVoltar.setOnClickListener {
-            Voltar()
+        binding.comeBack.setOnClickListener {
+            comeBack()
         }
 
-        binding.btnCadastrar.setOnClickListener {
-            cadastrarPessoa()
+        binding.btnRegister.setOnClickListener {
+            register()
         }
     }
 
-    private fun cadastrarPessoa() {
-        val nomeCompleto = binding.etNome.text.toString()
+    private fun register() {
+        val name = binding.etName.text.toString()
         val email = binding.etEmail.text.toString()
-        val senha = binding.etSenha.text.toString()
-        val confirmar_senha = binding.etConfirmarSenha.text.toString()
+        val password = binding.etPassword.text.toString()
+        val confirmPassword = binding.etConfimPassword.text.toString()
 
-        if (nomeCompleto.length < 5) {
+        if (name.length < 5) {
             Toast.makeText(
                 this,
                 "O nome completo deve ter pelo menos 5 caracteres!",
@@ -57,33 +64,49 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
-        if (senha.length < 6) {
+        if (password.length < 6) {
             Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT)
                 .show()
             return
         }
 
-        if (confirmar_senha.length < 6) {
+        if (confirmPassword.length < 6) {
             Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT)
                 .show()
             return
         }
 
-        if (senha != confirmar_senha) {
+        if (password != confirmPassword) {
             Toast.makeText(this, "As senhas não coincidem!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (TextUtils.isEmpty(nomeCompleto) ||
+        if (TextUtils.isEmpty(name) ||
             TextUtils.isEmpty(email) ||
-            TextUtils.isEmpty(senha) ||
-            TextUtils.isEmpty(confirmar_senha)
+            TextUtils.isEmpty(password) ||
+            TextUtils.isEmpty(confirmPassword)
         ) {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        sendToServer(nomeCompleto, email, senha)
+        val newUser = User(name, email, password)
+
+        RetrofitInstance.api.createUser(newUser).enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@CreateAccountActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
+                    comeBack()
+                } else {
+                    Toast.makeText(this@CreateAccountActivity, response.errorBody()?.string() ?: "Erro ao criar conta.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                Toast.makeText(this@CreateAccountActivity, "Erro: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+
     }
 
     private fun sendToServer(nome: String, email: String, senha: String) {
@@ -169,7 +192,7 @@ class CreateAccountActivity : AppCompatActivity() {
         }
     }
 
-    private fun Voltar(){
+    private fun comeBack(){
         val intent = Intent(this, Inicio::class.java)
         startActivity(intent)
     }

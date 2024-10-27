@@ -21,7 +21,7 @@ class Inicio : AppCompatActivity() {
             LoginEmailActivity()
         }
 
-        binding.cadastrar.setOnClickListener {
+        binding.register.setOnClickListener {
             Cadastrar()
         }
     }

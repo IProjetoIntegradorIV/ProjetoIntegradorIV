@@ -2,29 +2,34 @@ package br.edu.puccampinas.campusconnect
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.puccampinas.campusconnect.data.model.LoginRequest
+import br.edu.puccampinas.campusconnect.data.model.LoginResponse
+import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityLoginBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    // private val firestore = FirebaseFirestore.getInstance()
-    // private val auth = FirebaseAuth.getInstance()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.setaVoltar.setOnClickListener {
-            voltar()
+        binding.comeBack.setOnClickListener {
+            comeBack()
         }
-        binding.btnLogar.setOnClickListener { view ->
+        binding.btnLog.setOnClickListener { view ->
 
             val email = binding.etEmail.text.toString()
-            val senha = binding.etSenha.text.toString()
+            val senha = binding.etPassword.text.toString()
 
             when {
                 email.isEmpty() -> {
@@ -32,76 +37,55 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 senha.isEmpty() -> {
-                    binding.etSenha.error = "Digite sua senha!"
+                    binding.etPassword.error = "Digite sua senha!"
                 }
-                /*
-                else -> {
-                    verificarCredenciais(view, email, senha)
-                    auth.signInWithEmailAndPassword(email,senha).addOnCompleteListener { autentificacao ->
-                        if(autentificacao.isSuccessful){
-                            val user = auth.currentUser
-                            val userId = user?.uid
-                            val userDocRef = FirebaseFirestore.getInstance().collection("pessoas").document(userId!!)
-                            userDocRef.get().addOnSuccessListener { documentSnapshot ->
-                                if (documentSnapshot.exists()) {
-                                    val gerente = documentSnapshot.getBoolean("gerente")
 
-                                    if (gerente == true) {
-                                        (nome da tela quando o usuário logar)
-                                    } else {
-                                        (nome da tela quando o usuário logar)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } */
+                else -> {
+                    verifyCredentials(view, email, senha)
+                }
             }
         }
     }
 
-    private fun verificarCredenciais(view: View, email: String, senha: String) {
-        // val progressBar = binding.progessBar
-       // progressBar.visibility = View.VISIBLE
-        /*
-        firestore.collection("pessoas")
-            .whereEqualTo("email", email)
-            .whereEqualTo("senha", senha)
-            .get()
-            .addOnCompleteListener { task ->
-                progressBar.visibility = View.GONE
-
-                if (task.isSuccessful) {
-                    val documents = task.result.documents
-                    if (documents.isEmpty()) {
-                        val snackbar = Snackbar.make(view, "Credenciais inválidas!", Snackbar.LENGTH_SHORT)
-                        snackbar.show()
+    private fun verifyCredentials(view: View, email: String, senha: String) {
+        Log.d("LoginActivity", "Verificando credenciais para $email")
+        val loginRequest = LoginRequest(email, senha)
+        RetrofitInstance.api.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                Log.d("LoginActivity", "Resposta recebida: ${response.code()}")
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+                    Log.d("LoginActivity", "Resposta do corpo: $loginResponse")
+                    if (loginResponse != null && loginResponse.success) {
+                        Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT).show()
+                        navigateMainScreen()
                     } else {
-                        val snackbar = Snackbar.make(view, "Login efetuado com sucesso!", Snackbar.LENGTH_SHORT)
-                        snackbar.show()
+                        // Caso a resposta não seja bem-sucedida, mas a resposta tenha sido recebida
+                        Toast.makeText(this@LoginActivity, loginResponse?.message ?: "Erro desconhecido", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    val snackbar = Snackbar.make(view, "Erro ao verificar credenciais: ${task.exception?.message}", Snackbar.LENGTH_SHORT)
-                    snackbar.show()
+                    // Verificando se o código de resposta é 401 = usuário inexistente
+                    if (response.code() == 401) {
+                        Toast.makeText(this@LoginActivity, "Esse usuário não existe.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Erro ao processar o login: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
-    }
-         */
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.e("LoginError", "Erro: ${t.message}", t)
+                Toast.makeText(this@LoginActivity, "Erro: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
-    /*
-    private fun navegarEsqueciSenha(){
-        val intent = Intent(this, EsqueciSenha::class.java)
+    private fun navigateMainScreen(){
+        val intent = Intent(this, Inicio::class.java)
         startActivity(intent)
     }
-    */
 
-
-    private fun navegarTelaPrincipal(){
-        //
-    }
-
-    private fun voltar(){
+    private fun comeBack(){
         val intent = Intent(this, Inicio::class.java)
         startActivity(intent)
     }

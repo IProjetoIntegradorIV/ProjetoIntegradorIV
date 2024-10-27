@@ -6,7 +6,7 @@
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/seta_voltar"
+        android:id="@+id/come_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_voltar"
@@ -54,7 +54,7 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/etNome"
+        android:id="@+id/etName"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:hint="@string/digite_seu_nome_completo"
@@ -118,7 +118,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etSenha"
+            android:id="@+id/etPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/digite_sua_senha"
@@ -154,7 +154,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etConfirmarSenha"
+            android:id="@+id/etConfimPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/confirme_sua_senha"
@@ -174,7 +174,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnCadastrar"
+        android:id="@+id/btnRegister"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="@string/cadastrar"

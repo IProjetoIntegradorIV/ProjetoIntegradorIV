@@ -9,7 +9,7 @@
 
     <!-- Voltar Button -->
     <TextView
-        android:id="@+id/seta_voltar"
+        android:id="@+id/come_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:drawableStartCompat="@drawable/ic_voltar"

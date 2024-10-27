@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <TextView
-        android:id="@+id/seta_voltar"
+        android:id="@+id/come_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_voltar"
@@ -36,7 +36,7 @@
         android:drawableTint="@color/yellow"/>
 
     <TextView
-        android:id="@+id/cadastro"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/entre_com_as_suas_informa_es_de_cadastro"
@@ -92,7 +92,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etSenha"
+            android:id="@+id/etPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/digite_sua_senha"
@@ -112,7 +112,7 @@
 
 
     <TextView
-        android:id="@+id/etEsqueci"
+        android:id="@+id/etForgot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -124,7 +124,7 @@
         android:layout_marginStart="100dp"/>
 
     <Button
-        android:id="@+id/btnLogar"
+        android:id="@+id/btnLog"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="@string/logar"

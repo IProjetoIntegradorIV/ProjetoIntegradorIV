@@ -12,7 +12,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/seta_voltar"
+        android:id="@+id/come_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_voltar"
@@ -60,7 +60,7 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/etEmailEsqueciSenha"
+        android:id="@+id/etEmailForgotPassword"
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:hint="@string/digite_seu_e_mail"
@@ -79,7 +79,7 @@
         />
 
     <Button
-        android:id="@+id/btnEnviar"
+        android:id="@+id/btnSend"
         android:layout_width="90dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -107,7 +107,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etNovaSenha"
+            android:id="@+id/etNewPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/digite_sua_nova_senha"
@@ -143,7 +143,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etConfirmarSenha"
+            android:id="@+id/etConfirmPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/confirme_sua_senha"
@@ -163,7 +163,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnAlterarSenha"
+        android:id="@+id/btnChangePassword"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="@string/alterar"

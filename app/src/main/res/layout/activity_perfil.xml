@@ -11,7 +11,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/seta_voltar"
+            android:id="@+id/come_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -124,7 +124,7 @@
 
 
         <TextView
-            android:id="@+id/tvSenha"
+            android:id="@+id/tvPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:textSize="15sp"
@@ -158,7 +158,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etSenha"
+            android:id="@+id/etPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/digite_sua_senha"
@@ -194,7 +194,7 @@
         app:passwordToggleEnabled="true">
 
         <EditText
-            android:id="@+id/etConfirmarSenha"
+            android:id="@+id/etConfirmPassword"
             android:layout_width="350dp"
             android:layout_height="50dp"
             android:hint="@string/confirme_sua_senha"
@@ -214,7 +214,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnAtualizar"
+        android:id="@+id/btnUpdate"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="@string/atualizar"

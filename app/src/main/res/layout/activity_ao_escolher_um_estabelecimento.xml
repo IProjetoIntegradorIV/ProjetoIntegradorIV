@@ -16,7 +16,7 @@
             android:src="@drawable/logo_restaurante"/>
 
         <TextView
-            android:id="@+id/seta_voltar"
+            android:id="@+id/come_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-200dp"
