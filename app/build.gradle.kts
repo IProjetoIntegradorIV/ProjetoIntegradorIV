@@ -15,7 +15,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"213283986605-tljpbbferrhd1b984ub28vavkob3j62l.apps.googleusercontent.com\"")
     }
+
 
     buildTypes {
         release {
@@ -33,18 +36,26 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures{
-        viewBinding = true;
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
     }
 }
 
 dependencies {
-
+    implementation(kotlin("stdlib"))
+    implementation(libs.dotenv.kotlin)
+    implementation(libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.play.services.auth)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.identity.credential)
+    implementation(libs.androidx.runtime.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         binding.comeBack.setOnClickListener {
             comeBack()
         }
-        binding.btnLog.setOnClickListener { view ->
+        binding.btnLog.setOnClickListener {
 
             val email = binding.etEmail.text.toString()
             val senha = binding.etPassword.text.toString()
@@ -41,18 +41,23 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    verifyCredentials(view, email, senha)
+                    verifyCredentials(email, senha)
                 }
             }
         }
     }
 
-    private fun verifyCredentials(view: View, email: String, senha: String) {
+    private fun verifyCredentials(email: String, senha: String) {
         Log.d("LoginActivity", "Verificando credenciais para $email")
         val loginRequest = LoginRequest(email, senha)
         RetrofitInstance.api.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 Log.d("LoginActivity", "Resposta recebida: ${response.code()}")
+
+                if (response.errorBody() != null) {
+                    Log.e("LoginActivity", "Erro: ${response.errorBody()!!.string()}")
+                }
+
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     Log.d("LoginActivity", "Resposta do corpo: $loginResponse")
@@ -60,11 +65,9 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT).show()
                         navigateMainScreen()
                     } else {
-                        // Caso a resposta não seja bem-sucedida, mas a resposta tenha sido recebida
                         Toast.makeText(this@LoginActivity, loginResponse?.message ?: "Erro desconhecido", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    // Verificando se o código de resposta é 401 = usuário inexistente
                     if (response.code() == 401) {
                         Toast.makeText(this@LoginActivity, "Esse usuário não existe.", Toast.LENGTH_SHORT).show()
                     } else {
