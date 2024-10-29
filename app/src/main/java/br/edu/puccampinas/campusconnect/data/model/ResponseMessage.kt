@@ -1,3 +1,3 @@
 package br.edu.puccampinas.campusconnect.data.model
 
-class ResponseMessage(var message: String)
+data class ResponseMessage(var message: String)

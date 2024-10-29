@@ -72,6 +72,7 @@
     <string name="comentarios5">Comentários</string>
     <string name="adicionar_comentario5">ADICIONAR COMENTÁRIO</string>
     <string name="adicionar_coment5">ADICIONAR COMENTÁRIO</string>
-
+    <string name="buscar_estabelecimentos">Buscar estabelecimentos</string>
+    <string name="estabelecimentos">Estabelecimentos</string>
 
 </resources>

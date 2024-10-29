@@ -94,11 +94,13 @@ class CreateAccountActivity : AppCompatActivity() {
 
         RetrofitInstance.api.createUser(newUser).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
-                if (response.isSuccessful) {
-                    Toast.makeText(this@CreateAccountActivity, response.body()?.message, Toast.LENGTH_SHORT).show()
-                    comeBack()
+                if (response.isSuccessful || response.code() == 201) {
+                    val message = response.body()?.message ?: "Mensagem não disponível"
+                    Toast.makeText(this@CreateAccountActivity, message, Toast.LENGTH_SHORT).show()
+                    goToLogin()
                 } else {
-                    Toast.makeText(this@CreateAccountActivity, response.errorBody()?.string() ?: "Erro ao criar conta.", Toast.LENGTH_SHORT).show()
+                    val errorMessage = response.errorBody()?.string() ?: "Erro ao criar conta."
+                    Toast.makeText(this@CreateAccountActivity, errorMessage, Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -106,6 +108,7 @@ class CreateAccountActivity : AppCompatActivity() {
                 Toast.makeText(this@CreateAccountActivity, "Erro: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
 
     }
 
@@ -194,6 +197,11 @@ class CreateAccountActivity : AppCompatActivity() {
 
     private fun comeBack(){
         val intent = Intent(this, Inicio::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 }
