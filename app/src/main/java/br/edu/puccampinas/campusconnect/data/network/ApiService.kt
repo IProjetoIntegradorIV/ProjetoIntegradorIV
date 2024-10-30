@@ -4,6 +4,7 @@ import br.edu.puccampinas.campusconnect.data.model.Establishment
 import br.edu.puccampinas.campusconnect.data.model.LoginGoogleRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginResponse
+import br.edu.puccampinas.campusconnect.data.model.Product
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
 import retrofit2.Call
@@ -12,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @POST("api/users/login")
@@ -28,5 +30,8 @@ interface ApiService {
 
     @GET("api/users/establishments")
     suspend fun getEstablishments(): Response<List<Establishment>>
+
+    @GET("api/users/establishments/{establishmentId}/products")
+    suspend fun getProductsByEstablishment(@Path("establishmentId") establishmentId: String): Response<List<Product>>
 
 }

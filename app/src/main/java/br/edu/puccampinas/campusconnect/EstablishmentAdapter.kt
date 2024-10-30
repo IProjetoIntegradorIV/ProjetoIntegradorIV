@@ -1,5 +1,6 @@
 package br.edu.puccampinas.campusconnect
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,17 @@ class EstablishmentAdapter(private val establishments: List<Establishment>) :
         holder.descriptionTextView.text = establishment.description
         holder.openingHoursTextView.text = establishment.openingHours
         Glide.with(holder.itemView.context).load(establishment.photo).into(holder.photoImageView)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ProductActivity::class.java)
+            intent.putExtra("establishmentId", establishment.id)
+            intent.putExtra("establishmentName", establishment.name)
+            intent.putExtra("establishmentDescription", establishment.description)
+            intent.putExtra("establishmentOpeningHours", establishment.openingHours)
+            intent.putExtra("establishmentPhoto", establishment.photo)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = establishments.size
