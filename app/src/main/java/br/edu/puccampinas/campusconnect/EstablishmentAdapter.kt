@@ -34,12 +34,8 @@ class EstablishmentAdapter(private val establishments: List<Establishment>) :
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, ProductActivity::class.java)
+            val intent = Intent(context, ProductsActivity::class.java)
             intent.putExtra("establishmentId", establishment.id)
-            intent.putExtra("establishmentName", establishment.name)
-            intent.putExtra("establishmentDescription", establishment.description)
-            intent.putExtra("establishmentOpeningHours", establishment.openingHours)
-            intent.putExtra("establishmentPhoto", establishment.photo)
             context.startActivity(intent)
         }
     }

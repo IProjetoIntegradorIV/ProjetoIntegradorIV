@@ -63,7 +63,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22dp"
-                    android:text="aaaaaaaaaaaa"
+                    android:text="aaaaaa"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/productPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22dp"
+                    android:text="aaaaaa"
+                    android:layout_marginStart="30dp"
                     android:layout_gravity="center"/>
 
             </LinearLayout>

@@ -34,4 +34,6 @@ interface ApiService {
     @GET("api/users/establishments/{establishmentId}/products")
     suspend fun getProductsByEstablishment(@Path("establishmentId") establishmentId: String): Response<List<Product>>
 
+    @GET("api/users/establishments/{id}")
+    suspend fun getEstablishmentById(@Path("id") id: String): Response<Establishment>
 }
