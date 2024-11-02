@@ -7,13 +7,20 @@ import br.edu.puccampinas.campusconnect.data.model.LoginResponse
 import br.edu.puccampinas.campusconnect.data.model.Product
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("api/users/login")
@@ -36,4 +43,20 @@ interface ApiService {
 
     @GET("api/users/establishments/{id}")
     suspend fun getEstablishmentById(@Path("id") id: String): Response<Establishment>
+
+    @Multipart
+    @PUT("api/users/updateProfileImage")
+    suspend fun updateProfileImage(@Part("email") email: RequestBody, @Part file: MultipartBody.Part): Response<ResponseMessage>
+
+    @GET("api/users/profileImage")
+    suspend fun getProfileImage(@Query("email") email: String): Response<String>
+
+    @PUT("api/users/changePassword")
+    fun changePassword(@Query("email") email: String, @Query("newPassword") newPassword: String): Call<ResponseMessage>
+
+    @GET("api/users/users")
+    fun getUserByEmail(@Query("email") email: String): Call<User>
+
+    @PUT("api/users/changeName")
+    fun changeName(@Query("email") email: String, @Query("newName") newName: String): Call<ResponseMessage>
 }

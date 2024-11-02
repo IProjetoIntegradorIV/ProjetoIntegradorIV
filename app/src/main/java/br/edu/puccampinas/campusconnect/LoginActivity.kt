@@ -62,6 +62,11 @@ class LoginActivity : AppCompatActivity() {
                     val loginResponse = response.body()
                     Log.d("LoginActivity", "Resposta do corpo: $loginResponse")
                     if (loginResponse != null && loginResponse.success) {
+                        val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putString("logged_user_email", email)
+                            apply()
+                        }
                         Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT).show()
                         navigateMainScreen()
                     } else {

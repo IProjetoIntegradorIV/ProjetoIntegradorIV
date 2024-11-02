@@ -65,13 +65,22 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
 
-        <TextView
+
+        <EditText
+            android:id="@+id/etName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nome Nome Nome "
-            android:textColor="@color/blue"
-            android:textSize="25dp"
-           />
+            android:layout_height="50dp"
+            android:textSize="15sp"
+            android:background="@drawable/borda"
+            android:inputType="textEmailAddress"
+            android:layout_gravity="center"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:drawableTint="@color/blue"
+            android:drawablePadding="10dp" />
 
         <ImageView
             android:id="@+id/img_pencil"
@@ -110,6 +119,7 @@
         android:paddingEnd="10dp"
         android:drawablePadding="10dp"
         android:drawableTint="@color/blue"
+        android:gravity="center_vertical"
         />
 
     <TextView
@@ -130,7 +140,6 @@
             android:layout_height="50dp"
             android:textSize="15sp"
             android:background="@drawable/borda"
-            android:inputType="textPassword"
             app:endIconMode="password_toggle"
             android:layout_gravity="center"
             android:drawableStart="@drawable/ic_cadeado"
@@ -139,7 +148,9 @@
             android:drawableTint="@color/blue"
             android:paddingLeft="15dp"
             android:paddingStart="15dp"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            />
 
 
     <TextView

@@ -43,7 +43,7 @@ class ProductAdapter(private val products: List<Product>) : RecyclerView.Adapter
             itemView.findViewById<TextView>(R.id.productEvaluation).text = product.evaluation
             itemView.findViewById<TextView>(R.id.productPrice).text = product.price
             val imageView = itemView.findViewById<ImageView>(R.id.productPhoto)
-            Glide.with(itemView.context).load(product.photo).into(imageView)
+            Glide.with(itemView.context).load(product.photo).circleCrop().into(imageView)
         }
     }
 }

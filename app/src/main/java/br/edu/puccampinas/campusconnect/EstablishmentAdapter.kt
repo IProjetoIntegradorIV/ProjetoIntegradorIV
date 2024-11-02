@@ -30,7 +30,7 @@ class EstablishmentAdapter(private val establishments: List<Establishment>) :
         holder.nameTextView.text = establishment.name
         holder.descriptionTextView.text = establishment.description
         holder.openingHoursTextView.text = establishment.openingHours
-        Glide.with(holder.itemView.context).load(establishment.photo).into(holder.photoImageView)
+        Glide.with(holder.itemView.context).load(establishment.photo).circleCrop().into(holder.photoImageView)
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
