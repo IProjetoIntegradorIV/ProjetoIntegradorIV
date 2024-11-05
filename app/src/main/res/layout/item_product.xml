@@ -36,12 +36,12 @@
 
             <TextView
                 android:id="@+id/productDescription"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="22dp"
                 android:text="aaaaaaaaaaaaa"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
