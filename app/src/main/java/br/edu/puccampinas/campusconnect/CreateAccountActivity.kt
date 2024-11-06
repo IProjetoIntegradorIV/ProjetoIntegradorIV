@@ -41,6 +41,16 @@ class CreateAccountActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
             register()
         }
+
+        binding.checkBox1.setOnClickListener{
+            binding.checkBox1.isChecked = true
+            binding.checkBox2.isChecked = false
+        }
+
+        binding.checkBox2.setOnClickListener{
+            binding.checkBox2.isChecked = true
+            binding.checkBox1.isChecked = false
+        }
     }
 
     private fun register() {
@@ -48,6 +58,15 @@ class CreateAccountActivity : AppCompatActivity() {
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfimPassword.text.toString()
+
+        if(!binding.checkBox1.isChecked && !binding.checkBox2.isChecked){
+            Toast.makeText(
+                this,
+                "Escolha se você é dono de estabelecimento ou cliente!",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
 
         if (name.length < 5) {
             Toast.makeText(
@@ -90,7 +109,14 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
-        val newUser = User(name, email, password)
+        val establishmentOwner: Boolean
+
+        if (binding.checkBox1.isChecked)
+            establishmentOwner = true
+        else
+            establishmentOwner = false
+
+        val newUser = User(name, email, password, establishmentOwner)
 
         RetrofitInstance.api.createUser(newUser).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {

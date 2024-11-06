@@ -59,4 +59,7 @@ interface ApiService {
 
     @PUT("api/users/changeName")
     fun changeName(@Query("email") email: String, @Query("newName") newName: String): Call<ResponseMessage>
+
+    @GET("api/users/checkEstablishmentOwner")
+    fun checkEstablishmentOwner(@Query("email") email: String): Call<ResponseMessage>
 }

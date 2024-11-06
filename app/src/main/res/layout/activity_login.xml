@@ -110,19 +110,6 @@
             android:drawablePadding="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <TextView
-        android:id="@+id/etForgot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/esqueci_senha"
-        android:textColor="@color/blue"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="100dp"/>
-
     <Button
         android:id="@+id/btnLog"
         android:layout_width="200dp"

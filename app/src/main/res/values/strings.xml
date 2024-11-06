@@ -74,5 +74,9 @@
     <string name="adicionar_coment5">ADICIONAR COMENTÁRIO</string>
     <string name="buscar_estabelecimentos">Buscar estabelecimentos</string>
     <string name="estabelecimentos">Estabelecimentos</string>
+    <string name="voce_e">Você é?</string>
+    <string name="dono_estabelecimento">Dono de estabelecimento</string>
+    <string name="cliente">Cliente</string>
+
 
 </resources>

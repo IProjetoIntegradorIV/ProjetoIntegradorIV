@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.model.LoginRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginResponse
+import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityLoginBinding
 import retrofit2.Call
@@ -67,8 +68,8 @@ class LoginActivity : AppCompatActivity() {
                             putString("logged_user_email", email)
                             apply()
                         }
-                        Toast.makeText(this@LoginActivity, loginResponse.message, Toast.LENGTH_SHORT).show()
-                        navigateMainScreen()
+
+                        checkEstablishmentOwner(email)
                     } else {
                         Toast.makeText(this@LoginActivity, loginResponse?.message ?: "Erro desconhecido", Toast.LENGTH_SHORT).show()
                     }
@@ -88,8 +89,39 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun navigateMainScreen(){
-        val intent = Intent(this, EstablishmentActivity::class.java)
+    private fun checkEstablishmentOwner(email: String) {
+        Log.d("LoginActivity", "Verificando status de proprietário do estabelecimento para $email")
+        RetrofitInstance.api.checkEstablishmentOwner(email).enqueue(object : Callback<ResponseMessage> {
+            override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
+                if (response.isSuccessful) {
+                    val responseMessage = response.body()
+                    val isOwner = responseMessage?.message?.contains("true") == true
+
+                    val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putBoolean("establishment_owner", isOwner)
+                        apply()
+                    }
+
+                    checkEstablishmentOwnerRedirect(isOwner)
+                } else {
+                    Toast.makeText(this@LoginActivity, "Erro ao verificar o status do proprietário", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                Log.e("LoginError", "Erro: ${t.message}", t)
+                Toast.makeText(this@LoginActivity, "Erro ao verificar o status do proprietário", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun checkEstablishmentOwnerRedirect(isOwner: Boolean) {
+        val intent = if (isOwner) {
+            Intent(this, CreateAccountActivity::class.java)
+        } else {
+            Intent(this, EstablishmentActivity::class.java)
+        }
         startActivity(intent)
     }
 

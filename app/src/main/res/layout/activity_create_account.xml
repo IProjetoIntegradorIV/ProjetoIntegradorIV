@@ -19,7 +19,6 @@
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:src="@drawable/logo_sem_fundo"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"/>
 
     <TextView
@@ -43,11 +42,50 @@
         android:textColor="@color/blue"
         android:textSize="15sp"/>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/voce_e"
+        android:textSize="17sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="8dp"
+        >
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dono_estabelecimento"
+            android:checked="false"
+            android:textSize="15sp"/>
+
+        <CheckBox
+            android:layout_marginStart="40dp"
+            android:id="@+id/checkBox2"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cliente"
+            android:checked="false"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
         android:text="@string/nome"
         android:textSize="17sp"
         android:textColor="@color/yellow"
@@ -182,7 +220,7 @@
         android:background="@drawable/borda"
         android:backgroundTint="@color/yellow"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"/>
 
 </LinearLayout>
