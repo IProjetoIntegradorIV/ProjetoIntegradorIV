@@ -7,6 +7,7 @@ import br.edu.puccampinas.campusconnect.data.model.LoginResponse
 import br.edu.puccampinas.campusconnect.data.model.Product
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
+import br.edu.puccampinas.campusconnect.data.model.UserIdResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -62,4 +63,26 @@ interface ApiService {
 
     @GET("api/users/checkEstablishmentOwner")
     fun checkEstablishmentOwner(@Query("email") email: String): Call<ResponseMessage>
+
+    @GET("/api/users/getUserId")
+    suspend fun getUserIdByEmail(@Query("email") email: String): UserIdResponse
+
+    @GET("api/users/establishments/owner/{userId}")
+    suspend fun getEstablishmentIdByOwnerId(@Path("userId") userId: String): Response<Map<String, String>>
+
+    @GET("api/users/isEstablishmentOwner")
+    suspend fun isEstablishmentOwner(@Query("email") email: String): Response<Map<String, Boolean>>
+
+    @PUT("api/users/changeEstablishmentName")
+    suspend fun changeEstablishmentName(@Query("establishmentId") establishmentId: String, @Query("newName") newName: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeEstablishmentDescription")
+    suspend fun changeEstablishmentDescription(@Query("establishmentId") establishmentId: String, @Query("newDescription") newDescription: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeEstablishmentOpeningHours")
+    suspend fun changeEstablishmentOpeningHours(@Query("establishmentId") establishmentId: String, @Query("newOpeningHours") newOpeningHours: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeEstablishmentPhoto")
+    suspend fun changeEstablishmentPhoto(@Query("establishmentId") establishmentId: String, @Query("newPhoto") newPhoto: String): Response<ResponseMessage>
+
 }

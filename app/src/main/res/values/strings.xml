@@ -77,6 +77,7 @@
     <string name="voce_e">Você é?</string>
     <string name="dono_estabelecimento">Dono de estabelecimento</string>
     <string name="cliente">Cliente</string>
-
+    <string name="cadastrar_estabelecimento">Você ainda não tem um estabelecimento! Cadastre um</string>
+    <string name="url_da_foto">Cole aqui a URL da nova foto\n se quiser alterá-la</string>
 
 </resources>

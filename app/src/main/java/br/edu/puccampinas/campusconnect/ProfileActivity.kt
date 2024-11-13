@@ -55,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         binding.comeBack.setOnClickListener {
-            comeBack()
+            loggedUserEmail?.let { it1 -> fetchIsEstablishmentOwner(it1) }
         }
 
         binding.imgPencil.setOnClickListener {
@@ -183,11 +183,6 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun comeBack() {
-        val intent = Intent(this, EstablishmentActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun logout() {
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         with(sharedPref.edit()) {
@@ -285,5 +280,50 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
     */
+    private fun fetchIsEstablishmentOwner(email: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitInstance.api.isEstablishmentOwner(email)
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        // Verifica se o retorno é verdadeiro ou falso
+                        val isOwner = response.body()?.get("isEstablishmentOwner") ?: false
+                        if (isOwner) {
+                            // Chama a função quando for verdadeiro
+                            onOwnerFound()
+                        } else {
+                            // Chama a função quando for falso
+                            onNotOwnerFound()
+                        }
+                    } else {
+                        // Se não for bem-sucedido, mostra a mensagem de erro
+                        val errorMessage = response.errorBody()?.string() ?: "Erro desconhecido"
+                        showToast("Erro: $errorMessage")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showToast("Exceção: ${e.message}")
+                }
+            }
+        }
+    }
+
+    // Função chamada quando o usuário é proprietário
+    private fun onOwnerFound() {
+        val intent = Intent(this, MyEstablishmentActivity::class.java)
+        startActivity(intent)
+    }
+
+    // Função chamada quando o usuário não é proprietário
+    private fun onNotOwnerFound() {
+        val intent = Intent(this, EstablishmentActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    }
 
 }

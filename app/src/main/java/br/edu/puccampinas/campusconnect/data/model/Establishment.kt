@@ -7,13 +7,15 @@ class Establishment {
     var description: String? = null
     var openingHours: String? = null
     var photo: String? = null
+    var ownerId: String? = null
 
     constructor()
 
-    constructor(name: String?, description: String?, openingHours: String?, photo: String?) {
+    constructor(name: String?, description: String?, openingHours: String?, photo: String?, ownerId: String?) {
         this.name = name
         this.description = description
         this.openingHours = openingHours
         this.photo = photo
+        this.ownerId = ownerId
     }
 }

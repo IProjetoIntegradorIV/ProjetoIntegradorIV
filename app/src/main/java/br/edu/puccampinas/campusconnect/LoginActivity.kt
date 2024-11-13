@@ -118,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkEstablishmentOwnerRedirect(isOwner: Boolean) {
         val intent = if (isOwner) {
-            Intent(this, CreateAccountActivity::class.java)
+            Intent(this, MyEstablishmentActivity::class.java)
         } else {
             Intent(this, EstablishmentActivity::class.java)
         }
