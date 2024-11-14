@@ -2,6 +2,8 @@ package br.edu.puccampinas.campusconnect
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +21,7 @@ import kotlinx.coroutines.withContext
 
 private lateinit var binding: ActivityProductBinding
 private lateinit var establishmentId: String
+private lateinit var productId: String
 private var loggedUserEmail: String? = null
 
 class ProductActivity : AppCompatActivity() {
@@ -42,7 +45,7 @@ class ProductActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val productId = intent.getStringExtra("productId") ?:" N/A"
+        productId = intent.getStringExtra("productId") ?:" N/A"
         establishmentId = intent.getStringExtra("establishmentId") ?: "N/A"
         val productName = intent.getStringExtra("productName") ?: "N/A"
         val productDescription = intent.getStringExtra("productDescription") ?: "N/A"
@@ -59,6 +62,22 @@ class ProductActivity : AppCompatActivity() {
         binding.etname.hint = productName
         binding.etdescription.hint = productDescription
         binding.etPrice.hint = productPrice
+
+        binding.editName.setOnClickListener {
+            changeProductName()
+        }
+
+        binding.editDescription.setOnClickListener {
+            changeProductDescription()
+        }
+
+        binding.editPrice.setOnClickListener {
+            changeProductPrice()
+        }
+
+        binding.editPhoto.setOnClickListener {
+            changeProductPhoto()
+        }
     }
 
     private fun fetchIsEstablishmentOwner(email: String) {
@@ -120,4 +139,139 @@ class ProductActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun changeProductName() {
+        val name = binding.etname.text.toString()
+
+        if (TextUtils.isEmpty(name)) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Verifica se o ID do produto existe
+        productId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeProductName(it, name)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d("MyEstablishmentActivity", "Nome alterado com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProductActivity, "Product name updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("MyEstablishmentActivity", "Erro ao mudar o nome: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun changeProductDescription() {
+        val description = binding.etdescription.text.toString()
+
+        if (TextUtils.isEmpty(description)) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Verifica se o ID do produto existe
+        productId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeProductDescription(it, description)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d("MyEstablishmentActivity", "Descrição alterada com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProductActivity, "Product description updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("MyEstablishmentActivity", "Erro ao mudar a descrição: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun changeProductPrice() {
+        val price = binding.etPrice.text.toString()
+
+        if (TextUtils.isEmpty(price)) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Verifica se o ID do produto existe
+        productId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeProductPrice(it, price)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d("MyEstablishmentActivity", "Preço alterado com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProductActivity, "Product price updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("MyEstablishmentActivity", "Erro ao mudar o preço: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun changeProductPhoto() {
+        val photo = binding.etPhoto.text.toString()
+
+        if (TextUtils.isEmpty(photo)) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Verifica se o ID do produto existe
+        productId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeProductPhoto(it, photo)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d("MyEstablishmentActivity", "Foto alterada com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProductActivity, "Product photo updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("MyEstablishmentActivity", "Erro ao mudar a foto: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProductActivity, "Error changing the photo.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 }

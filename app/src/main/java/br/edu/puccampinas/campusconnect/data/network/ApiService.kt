@@ -85,4 +85,15 @@ interface ApiService {
     @PUT("api/users/changeEstablishmentPhoto")
     suspend fun changeEstablishmentPhoto(@Query("establishmentId") establishmentId: String, @Query("newPhoto") newPhoto: String): Response<ResponseMessage>
 
+    @PUT("api/users/changeProductName")
+    suspend fun changeProductName(@Query("productId") productId: String, @Query("newName") newName: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeProductDescription")
+    suspend fun changeProductDescription(@Query("productId") productId: String, @Query("newDescription") newDescription: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeProductPrice")
+    suspend fun changeProductPrice(@Query("productId") productId: String, @Query("newPrice") newPrice: String): Response<ResponseMessage>
+
+    @PUT("api/users/changeProductPhoto")
+    suspend fun changeProductPhoto(@Query("productId") productId: String, @Query("newPhoto") newPhoto: String): Response<ResponseMessage>
 }

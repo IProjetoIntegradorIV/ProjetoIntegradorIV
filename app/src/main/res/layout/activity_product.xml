@@ -7,6 +7,11 @@
     android:background="@color/white"
     android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
     <TextView
         android:id="@+id/come_back"
         android:layout_width="wrap_content"
@@ -14,6 +19,18 @@
         app:drawableStartCompat="@drawable/ic_voltar"
         app:drawableTint="@color/blue"
         />
+
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginStart="300dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/baseline_delete_24"
+        android:visibility="gone"
+        />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/image_view"
@@ -72,8 +89,8 @@
 
         <EditText
             android:id="@+id/etname"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
             android:background="@drawable/borda"
             android:inputType="textEmailAddress"
             android:layout_marginStart="10dp"
@@ -100,16 +117,6 @@
             android:visibility="gone"
             />
 
-        <ImageView
-            android:id="@+id/delete"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_gravity="end|bottom"
-            android:layout_marginStart="100dp"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/baseline_delete_24"
-            android:visibility="gone"
-            />
     </LinearLayout>
 
     <LinearLayout
@@ -119,8 +126,8 @@
 
         <EditText
             android:id="@+id/etdescription"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
@@ -154,8 +161,8 @@
 
         <EditText
             android:id="@+id/etPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="330dp"
+            android:layout_height="60dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
