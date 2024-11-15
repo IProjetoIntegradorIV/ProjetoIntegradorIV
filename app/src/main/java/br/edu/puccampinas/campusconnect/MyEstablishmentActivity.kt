@@ -15,6 +15,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.UserIdResponse
@@ -29,7 +33,7 @@ private lateinit var productAdapter: ProductAdapter
 private lateinit var recyclerView: RecyclerView
 private var loggedUserEmail: String? = null
 private var userId: String? = null
-private var establishmentId: String? = null
+private lateinit var establishmentId: String
 
 class MyEstablishmentActivity : AppCompatActivity() {
 
@@ -71,6 +75,10 @@ class MyEstablishmentActivity : AppCompatActivity() {
         binding.editPhoto.setOnClickListener {
             changeEstablishmentPhoto()
         }
+
+        binding.delete.setOnClickListener {
+            showPopup()
+        }
     }
 
     fun fetchUserIdByEmail(email: String) {
@@ -95,7 +103,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful && response.body() != null) {
                         // Armazena o establishmentId na variável de instância
-                        establishmentId = response.body()?.get("establishmentId")
+                        establishmentId = response.body()?.get("establishmentId").toString()
 
                         if (establishmentId != null) {
                             binding.register.visibility = View.GONE
@@ -154,6 +162,8 @@ class MyEstablishmentActivity : AppCompatActivity() {
                         binding.editDescription.visibility = View.VISIBLE
                         binding.editOpeningHours.visibility = View.VISIBLE
                         binding.etPhoto.visibility = View.VISIBLE
+                        binding.delete.visibility = View.VISIBLE
+                        binding.btnAddProduct.visibility = View.VISIBLE
 
                         displayEstablishmentDetails(establishment)
                         fetchProducts(establishmentId)
@@ -326,6 +336,59 @@ class MyEstablishmentActivity : AppCompatActivity() {
                         Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
                         Toast.makeText(this@MyEstablishmentActivity, "Connection error.", Toast.LENGTH_SHORT).show()
                     }
+                }
+            }
+        }
+    }
+
+    private fun showPopup() {
+        val dialogView = layoutInflater.inflate(R.layout.pop_up, null)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+
+        builder.setCancelable(true)
+
+        val dialog = builder.create()
+
+        dialog.setOnCancelListener {
+            dialog.dismiss()
+        }
+
+        val text = dialogView.findViewById<TextView>(R.id.text)
+        text.text = "Tem certeza que deseja excluir esse estabelecimento?"
+
+        val btnClose = dialogView.findViewById<ImageView>(R.id.btnClose)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val btnDelete = dialogView.findViewById<Button>(R.id.btnDelete)
+        btnDelete.setOnClickListener {
+            dialog.dismiss()
+            deleteEstablishment()
+            startActivity(Intent(this,LoginActivity::class.java))
+        }
+
+        dialog.show()
+    }
+
+    private fun deleteEstablishment() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitInstance.api.deleteEstablishmentById(establishmentId)
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        showToast("establishment deleted successfully.")
+                    } else {
+                        Log.e("MyEstablishmentActivity", "Error deleting establishment: ${response.errorBody()?.string()}")
+                        showToast("Error deleting product.")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("MyEstablishmentActivity", "Exception during delete: ${e.message}")
+                    showToast("Connection error.")
                 }
             }
         }

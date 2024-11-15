@@ -79,5 +79,8 @@
     <string name="cliente">Cliente</string>
     <string name="cadastrar_estabelecimento">Você ainda não tem um estabelecimento! Cadastre um</string>
     <string name="url_da_foto">Cole aqui a URL da nova foto\n se quiser alterá-la</string>
+    <string name="excluir_produto">Tem certeza que deseja excluir esse produto?</string>
+    <string name="excluir">Excluir</string>
+    <string name="cadastrar_produto">Cadastrar produto</string>
 
 </resources>

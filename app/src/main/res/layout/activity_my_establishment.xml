@@ -42,14 +42,14 @@
         <EditText
             android:id="@+id/name"
             android:layout_width="330dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:background="@drawable/borda"
             android:inputType="textEmailAddress"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
             android:textColor="@color/blue"
             android:textColorHint="@color/blue"
             android:textSize="30sp"
+            android:layout_marginTop="20dp"
             android:paddingLeft="15dp"
             android:paddingStart="15dp"
             android:paddingEnd="10dp"
@@ -78,7 +78,7 @@
         <EditText
             android:id="@+id/description"
             android:layout_width="330dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
@@ -113,7 +113,7 @@
         <EditText
             android:id="@+id/openingHours"
             android:layout_width="330dp"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
@@ -176,12 +176,44 @@
             />
     </LinearLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/btnAddProduct"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="@string/cadastrar_produto"
+            android:textColor="@color/blue"
+            android:background="@drawable/borda"
+            android:backgroundTint="@color/yellow"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/baseline_delete_24"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/products"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/produtos"
         android:textColor="@color/blue"
         android:textSize="25sp"

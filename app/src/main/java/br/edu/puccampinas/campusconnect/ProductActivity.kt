@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -77,6 +80,10 @@ class ProductActivity : AppCompatActivity() {
 
         binding.editPhoto.setOnClickListener {
             changeProductPhoto()
+        }
+
+        binding.delete.setOnClickListener {
+            showPopup()
         }
     }
 
@@ -274,4 +281,55 @@ class ProductActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun showPopup() {
+        val dialogView = layoutInflater.inflate(R.layout.pop_up, null)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+
+        builder.setCancelable(true)
+
+        val dialog = builder.create()
+
+        dialog.setOnCancelListener {
+            dialog.dismiss()
+        }
+
+        val btnClose = dialogView.findViewById<ImageView>(R.id.btnClose)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val btnDelete = dialogView.findViewById<Button>(R.id.btnDelete)
+        btnDelete.setOnClickListener {
+            dialog.dismiss()
+            deleteProduct()
+            startActivity(Intent(this,MyEstablishmentActivity::class.java))
+        }
+
+        dialog.show()
+    }
+
+    private fun deleteProduct() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitInstance.api.deleteProductById(productId)
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        showToast("Product deleted successfully.")
+                    } else {
+                        Log.e("ProductActivity", "Error deleting product: ${response.errorBody()?.string()}")
+                        showToast("Error deleting product.")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("ProductActivity", "Exception during delete: ${e.message}")
+                    showToast("Connection error.")
+                }
+            }
+        }
+    }
+
 }
