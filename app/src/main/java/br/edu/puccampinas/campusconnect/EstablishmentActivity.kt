@@ -28,6 +28,15 @@ class EstablishmentActivity : AppCompatActivity() {
 
         fetchEstablishments()
 
+        binding.search.setOnClickListener {
+            val searchText = binding.etSearch.text.toString().trim()
+            if (searchText.isNotEmpty()) {
+                searchEstablishmentsByName(searchText)
+            } else {
+                fetchEstablishments()
+            }
+        }
+
         binding.comeBack.setOnClickListener {
             comeBack()
         }
@@ -35,6 +44,7 @@ class EstablishmentActivity : AppCompatActivity() {
         binding.profile.setOnClickListener {
             profile()
         }
+
     }
 
     private fun fetchEstablishments() {
@@ -47,6 +57,21 @@ class EstablishmentActivity : AppCompatActivity() {
                     recyclerView.adapter = establishmentAdapter
                 } else {
                     Toast.makeText(this@EstablishmentActivity, "Failed to load establishments", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun searchEstablishmentsByName(name: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = RetrofitInstance.api.searchEstablishments(name)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful && response.body() != null) {
+                    val establishments = response.body()!!
+                    establishmentAdapter = EstablishmentAdapter(establishments)
+                    recyclerView.adapter = establishmentAdapter
+                } else {
+                    Toast.makeText(this@EstablishmentActivity, "No results found", Toast.LENGTH_SHORT).show()
                 }
             }
         }

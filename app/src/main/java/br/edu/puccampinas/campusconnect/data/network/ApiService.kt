@@ -163,4 +163,9 @@ interface ApiService {
     suspend fun deleteEstablishmentById(
         @Path("establishmentId") establishmentId: String
     ): Response<ResponseMessage>
+
+    @GET("api/users/establishments/search")
+    suspend fun searchEstablishments(
+        @Query("name") name: String
+    ): Response<List<Establishment>>
 }

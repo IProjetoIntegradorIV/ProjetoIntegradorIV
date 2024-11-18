@@ -38,23 +38,22 @@
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
 
-    <EditText
-        android:id="@+id/etName"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:hint="@string/buscar_estabelecimentos"
-        android:background="@drawable/borda"
-        android:textSize="15sp"
-        android:drawableEnd="@drawable/baseline_close_24"
-        android:layout_gravity="start"
-        android:layout_marginStart="10dp"
-        android:textColorHint="@color/gray"
-        android:textColor="@color/black"
-        android:paddingStart="15dp"
-        android:paddingEnd="10dp"
-        android:drawablePadding="10dp"
-        android:drawableTint="@color/blue"
-        />
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/borda"
+            android:drawableEnd="@drawable/baseline_close_24"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/blue"
+            android:hint="@string/buscar_estabelecimentos"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/search"
