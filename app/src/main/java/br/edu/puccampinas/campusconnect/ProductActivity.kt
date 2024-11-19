@@ -9,11 +9,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityProductBinding
 import com.bumptech.glide.Glide
@@ -33,21 +30,24 @@ class ProductActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityProductBinding.inflate(layoutInflater)
+        binding = ActivityProductBinding.inflate(layoutInflater)  // Associa o layout com o código
         setContentView(binding.root)
 
+        // Recupera o email do usuário logado
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
+        // Verifica se o usuário é proprietário do estabelecimento
         loggedUserEmail?.let { fetchIsEstablishmentOwner(it) }
 
+        // Configura o botão de voltar para a tela anterior
         binding.comeBack.setOnClickListener {
             val intent = Intent(this, nextActivityClass)
             intent.putExtra("establishmentId", establishmentId)
             startActivity(intent)
         }
 
+        // Obtém os dados do produto passados pela Intent
         productId = intent.getStringExtra("productId") ?:" N/A"
         establishmentId = intent.getStringExtra("establishmentId") ?: "N/A"
         val productName = intent.getStringExtra("productName") ?: "N/A"
@@ -56,40 +56,45 @@ class ProductActivity : AppCompatActivity() {
         val productPhoto = intent.getStringExtra("productPhoto") ?: "N/A"
         val productPrice = intent.getStringExtra("productPrice")?: "N/A"
 
+        // Exibe as informações do produto na tela
         binding.name.text = productName
         binding.description.text = productDescription
         binding.evaluation.text = productEvaluation
         binding.price.text = productPrice
         Glide.with(this).load(productPhoto).into(binding.imageView)
 
+        // Define os hints nos campos de entrada de dados
         binding.etname.hint = productName
         binding.etdescription.hint = productDescription
         binding.etPrice.hint = productPrice
 
+        // Configura os listeners para os botões de edição
         binding.editName.setOnClickListener {
-            changeProductName()
+            changeProductName()  // Chama a função para alterar o nome do produto
         }
 
         binding.editDescription.setOnClickListener {
-            changeProductDescription()
+            changeProductDescription()  // Chama a função para alterar a descrição do produto
         }
 
         binding.editPrice.setOnClickListener {
-            changeProductPrice()
+            changeProductPrice()  // Chama a função para alterar o preço do produto
         }
 
         binding.editPhoto.setOnClickListener {
-            changeProductPhoto()
+            changeProductPhoto()  // Chama a função para alterar a foto do produto
         }
 
         binding.delete.setOnClickListener {
-            showPopup()
+            showPopup()  // Exibe o pop-up de confirmação de exclusão
         }
     }
 
+    // Função que verifica se o usuário é o proprietário do estabelecimento
     private fun fetchIsEstablishmentOwner(email: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                // Faz a requisição para a API para verificar se o usuário é proprietário
                 val response = RetrofitInstance.api.isEstablishmentOwner(email)
 
                 withContext(Dispatchers.Main) {
@@ -111,6 +116,7 @@ class ProductActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    // Exibe uma mensagem caso ocorra uma exceção durante a requisição
                     showToast("Exceção: ${e.message}")
                 }
             }
@@ -119,6 +125,7 @@ class ProductActivity : AppCompatActivity() {
 
     // Função chamada quando o usuário é proprietário
     private fun onOwnerFound() {
+        // Mostra os campos de edição e oculta os campos de visualização
         binding.name.visibility = View.GONE
         binding.description.visibility = View.GONE
         binding.price.visibility = View.GONE
@@ -133,6 +140,7 @@ class ProductActivity : AppCompatActivity() {
         binding.editPhoto.visibility = View.VISIBLE
         binding.delete.visibility = View.VISIBLE
 
+        // Altera a classe da próxima atividade para MyEstablishmentActivity
         nextActivityClass = MyEstablishmentActivity::class.java
     }
 
@@ -142,10 +150,12 @@ class ProductActivity : AppCompatActivity() {
 
     }
 
+    // Função para exibir Toasts na tela
     fun showToast(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
+    // Função para alterar o nome do produto
     private fun changeProductName() {
         val name = binding.etname.text.toString()
 
@@ -163,15 +173,18 @@ class ProductActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
+                            // Se a atualização for bem-sucedida, exibe uma mensagem
                             Log.d("MyEstablishmentActivity", "Nome alterado com sucesso: ${response.body()?.message}")
                             Toast.makeText(this@ProductActivity, "Product name updated successfully.", Toast.LENGTH_SHORT).show()
                         } else {
+                            // Se houver erro na requisição, exibe uma mensagem de erro
                             Log.e("MyEstablishmentActivity", "Erro ao mudar o nome: ${response.errorBody()?.string()}")
                             Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
+                        // Exibe uma mensagem em caso de erro de conexão
                         Log.e("MyEstablishmentActivity", "Falha na requisição: ${e.message}")
                         Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
                     }
@@ -180,6 +193,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    // Função para alterar a descrição do produto
     private fun changeProductDescription() {
         val description = binding.etdescription.text.toString()
 
@@ -197,9 +211,11 @@ class ProductActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
+                            // Se a atualização for bem-sucedida, exibe uma mensagem
                             Log.d("MyEstablishmentActivity", "Descrição alterada com sucesso: ${response.body()?.message}")
                             Toast.makeText(this@ProductActivity, "Product description updated successfully.", Toast.LENGTH_SHORT).show()
                         } else {
+                            // Se houver erro na requisição, exibe uma mensagem de erro
                             Log.e("MyEstablishmentActivity", "Erro ao mudar a descrição: ${response.errorBody()?.string()}")
                             Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
                         }
@@ -214,6 +230,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    // Função para alterar o preço do produto
     private fun changeProductPrice() {
         val price = binding.etPrice.text.toString()
 
@@ -231,9 +248,11 @@ class ProductActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
+                            // Se a atualização for bem-sucedida, exibe uma mensagem
                             Log.d("MyEstablishmentActivity", "Preço alterado com sucesso: ${response.body()?.message}")
                             Toast.makeText(this@ProductActivity, "Product price updated successfully.", Toast.LENGTH_SHORT).show()
                         } else {
+                            // Se houver erro na requisição, exibe uma mensagem de erro
                             Log.e("MyEstablishmentActivity", "Erro ao mudar o preço: ${response.errorBody()?.string()}")
                             Toast.makeText(this@ProductActivity, "Error changing the name.", Toast.LENGTH_SHORT).show()
                         }
@@ -248,6 +267,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    // Função para alterar a foto do produto
     private fun changeProductPhoto() {
         val photo = binding.etPhoto.text.toString()
 
@@ -265,9 +285,11 @@ class ProductActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
+                            // Se a atualização for bem-sucedida, exibe uma mensagem
                             Log.d("MyEstablishmentActivity", "Foto alterada com sucesso: ${response.body()?.message}")
                             Toast.makeText(this@ProductActivity, "Product photo updated successfully.", Toast.LENGTH_SHORT).show()
                         } else {
+                            // Se houver erro na requisição, exibe uma mensagem de erro
                             Log.e("MyEstablishmentActivity", "Erro ao mudar a foto: ${response.errorBody()?.string()}")
                             Toast.makeText(this@ProductActivity, "Error changing the photo.", Toast.LENGTH_SHORT).show()
                         }
@@ -282,6 +304,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    // Exibe o pop-up de confirmação para deletar o produto
     private fun showPopup() {
         val dialogView = layoutInflater.inflate(R.layout.pop_up, null)
         val builder = AlertDialog.Builder(this)
@@ -310,6 +333,7 @@ class ProductActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // Função para excluir o produto
     private fun deleteProduct() {
         CoroutineScope(Dispatchers.IO).launch {
             try {

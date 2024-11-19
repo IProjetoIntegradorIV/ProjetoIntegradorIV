@@ -1,19 +1,14 @@
 package br.edu.puccampinas.campusconnect
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
-import br.edu.puccampinas.campusconnect.data.network.ApiService
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityProfileBinding
 import com.bumptech.glide.Glide
@@ -21,72 +16,72 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private var loggedUserEmail: String? = null
-    private var userId: String? = null
+    private var loggedUserEmail: String? = null  // Armazena o email do usuário logado
+    private var userId: String? = null  // Armazena o ID do usuário para identificá-lo nas requisições
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
+        // Recupera o email do usuário logado das SharedPreferences
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
+        // Chama o método para buscar os dados do usuário
         fetchUserData()
 
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Configura os listeners de clique para os botões
         binding.logout.setOnClickListener {
-            logout()
+            logout()  // Chama o método logout ao clicar no botão de logout
         }
 
         binding.comeBack.setOnClickListener {
+            // Verifica se o usuário é dono de algum estabelecimento ao clicar em voltar
             loggedUserEmail?.let { it1 -> fetchIsEstablishmentOwner(it1) }
         }
 
         binding.imgPencil.setOnClickListener {
-            changeName()
+            changeName()  // Chama o método para alterar o nome do usuário
         }
 
         binding.editPhoto.setOnClickListener {
-            changeUserPhoto()
+            changeUserPhoto()  // Chama o método para alterar a foto do usuário
         }
 
         binding.btnUpdate.setOnClickListener {
-            changePassword()
+            changePassword()  // Chama o método para alterar a senha do usuário
         }
     }
 
+    // Método para buscar os dados do usuário
     private fun fetchUserData() {
         val email = loggedUserEmail ?: run {
             Toast.makeText(this, "Email do usuário não encontrado!", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Faz uma requisição para obter os dados do usuário pelo email
         RetrofitInstance.api.getUserByEmail(email).enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (response.isSuccessful) {
                     val user = response.body()
                     user?.let {
+                        // Preenche os campos do layout com as informações do usuário
                         userId = it.id
                         binding.tvEmail.setText(it.email)
                         binding.etName.setText(it.name)
                         binding.tvPassword.setText(it.password)
                         if(it.photo != null){
+                            // Carrega a foto do usuário usando Glide
                         Glide.with(this@ProfileActivity)
                             .load(it.photo)
                             .circleCrop()
@@ -105,6 +100,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    // Método para alterar a foto do usuário
     private fun changeUserPhoto() {
         val photo = binding.etPhoto.text.toString()
 
@@ -139,6 +135,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Método para alterar o nome do usuário
     private fun changeName() {
         val name = binding.etName.text.toString()
 
@@ -152,6 +149,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
+        // Envia a requisição para alterar o nome do usuário
         RetrofitInstance.api.changeName(email, name).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
                 Log.d("ProfileActivity", "Resposta recebida: ${response.code()}")
@@ -172,6 +170,7 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    // Método para alterar a senha do usuário
     private fun changePassword() {
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfirmPassword.text.toString()
@@ -201,6 +200,7 @@ class ProfileActivity : AppCompatActivity() {
             return
         }
 
+        // Envia a requisição para alterar a senha
         RetrofitInstance.api.changePassword(email, password).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
                 Log.d("ProfileActivity", "Resposta recebida: ${response.code()}")
@@ -221,16 +221,18 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    // Método para deslogar o usuário
     private fun logout() {
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         with(sharedPref.edit()) {
-            remove("logged_user_email")
+            remove("logged_user_email")  // Remove o email do usuário das SharedPreferences
             apply()
         }
-        val intent = Intent(this, Inicio::class.java)
+        val intent = Intent(this, Inicio::class.java)  // Redireciona para a tela inicial
         startActivity(intent)
     }
 
+    // Método para verificar se o usuário é proprietário de um estabelecimento
     private fun fetchIsEstablishmentOwner(email: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

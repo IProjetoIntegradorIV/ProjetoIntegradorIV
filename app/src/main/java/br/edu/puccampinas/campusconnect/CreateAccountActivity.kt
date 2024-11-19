@@ -2,64 +2,60 @@ package br.edu.puccampinas.campusconnect
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
-import br.edu.puccampinas.campusconnect.data.network.ApiService
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityCreateAccountBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayInputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
-import java.net.InetSocketAddress
-import java.net.Socket
 
 class CreateAccountActivity : AppCompatActivity() {
+
+    // Variável de binding para acessar os elementos da interface
     private lateinit var binding: ActivityCreateAccountBinding
-    private var socket: Socket? = null
-    private var inputStream: ObjectInputStream? = null
-    private var outputStream: ObjectOutputStream? = null
-    private var parceiro: Parceiro? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inicializa o binding
         binding = ActivityCreateAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Define ação para o botão "Voltar" que retorna à tela de início
         binding.comeBack.setOnClickListener {
             comeBack()
         }
 
+        // Define ação para o botão "Registrar" que chama a função de registro
         binding.btnRegister.setOnClickListener {
             register()
         }
 
-        binding.checkBox1.setOnClickListener{
+        // Configuração dos checkboxes para não permitir seleção mútua
+        binding.checkBox1.setOnClickListener {
             binding.checkBox1.isChecked = true
             binding.checkBox2.isChecked = false
         }
 
-        binding.checkBox2.setOnClickListener{
+        binding.checkBox2.setOnClickListener {
             binding.checkBox2.isChecked = true
             binding.checkBox1.isChecked = false
         }
     }
 
+    // Função que lida com o registro do usuário após validação dos campos
     private fun register() {
         val name = binding.etName.text.toString()
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
         val confirmPassword = binding.etConfimPassword.text.toString()
 
-        if(!binding.checkBox1.isChecked && !binding.checkBox2.isChecked){
+        // Verifica se um dos checkboxes foi selecionado
+        if (!binding.checkBox1.isChecked && !binding.checkBox2.isChecked) {
             Toast.makeText(
                 this,
                 "Escolha se você é dono de estabelecimento ou cliente!",
@@ -68,6 +64,7 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
+        // Validação de comprimento do nome
         if (name.length < 5) {
             Toast.makeText(
                 this,
@@ -77,52 +74,50 @@ class CreateAccountActivity : AppCompatActivity() {
             return
         }
 
+        // Validação de domínio do e-mail
         if (!email.endsWith("@gmail.com")) {
-            Toast.makeText(this, "O e-mail deve ser do domínio @gmail.com!", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, "O e-mail deve ser do domínio @gmail.com!", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Validação de comprimento da senha e confirmação de senha
         if (password.length < 6) {
-            Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT).show()
             return
         }
 
         if (confirmPassword.length < 6) {
-            Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Verifica se as senhas coincidem
         if (password != confirmPassword) {
             Toast.makeText(this, "As senhas não coincidem!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (TextUtils.isEmpty(name) ||
-            TextUtils.isEmpty(email) ||
-            TextUtils.isEmpty(password) ||
-            TextUtils.isEmpty(confirmPassword)
-        ) {
+        // Verifica se todos os campos estão preenchidos
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val establishmentOwner: Boolean
+        // Define se o usuário é dono de estabelecimento com base no checkbox selecionado
+        val establishmentOwner = binding.checkBox1.isChecked
 
-        if (binding.checkBox1.isChecked)
-            establishmentOwner = true
-        else
-            establishmentOwner = false
-
+        // Cria o objeto 'User' com os dados inseridos pelo usuário
         val newUser = User(name, email, password, establishmentOwner)
 
+        // Faz a chamada para a API usando Retrofit para criar o novo usuário
         RetrofitInstance.api.createUser(newUser).enqueue(object : Callback<ResponseMessage> {
             override fun onResponse(call: Call<ResponseMessage>, response: Response<ResponseMessage>) {
+                // Verifica se a resposta foi bem-sucedida
                 if (response.isSuccessful || response.code() == 201) {
                     val message = response.body()?.message ?: "Mensagem não disponível"
                     Toast.makeText(this@CreateAccountActivity, message, Toast.LENGTH_SHORT).show()
+
+                    // Navega para a tela de login após o registro bem-sucedido
                     goToLogin()
                 } else {
                     val errorMessage = response.errorBody()?.string() ?: "Erro ao criar conta."
@@ -131,102 +126,20 @@ class CreateAccountActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
+                // Exibe uma mensagem de erro se a chamada à API falhar
                 Toast.makeText(this@CreateAccountActivity, "Erro: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
-
-
     }
 
-    private fun sendToServer(nome: String, email: String, senha: String) {
-        Thread {
-            try {
-                // Conectando ao servidor
-                socket = Socket()
-                socket?.connect(InetSocketAddress("localhost", 4000), 10000)
-
-                if (socket?.isConnected == true) {
-                    outputStream = ObjectOutputStream(socket!!.getOutputStream())
-                    inputStream = ObjectInputStream(socket!!.getInputStream())
-
-                    // Criar o Parceiro com os streams
-                    parceiro = Parceiro(socket!!, inputStream!!, outputStream!!)
-
-                    // Envia os dados de cadastro
-                    val pedidoDeRegistro = PedidoDeRegistro(nome, email, senha)
-                    parceiro?.receba(pedidoDeRegistro)
-
-
-                    // Recebe a resposta do servidor
-                    val resposta = parceiro?.envie()
-
-                    // Log de confirmação de envio
-                    Log.d("CreateAccountActivity", "Resposta do servidor: $resposta")
-
-                    // Verifica se a resposta é um Resultado
-                    if (resposta is Resultado) {
-                        // Se for um Resultado, verifica a mensagem
-                        if (resposta.valorResultante == "Dados recebidos e inseridos com sucesso!") {
-                            runOnUiThread {
-                                Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                            }
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                navigateToLoginActivity()
-                            }, 2000)
-                        } else {
-                            runOnUiThread {
-                                Toast.makeText(this, "Erro: ${resposta.valorResultante}", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } else {
-                        runOnUiThread {
-                            Toast.makeText(this, "Resposta inesperada do servidor", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    runOnUiThread {
-                        Toast.makeText(this, "Erro ao conectar ao servidor", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                runOnUiThread {
-                    Toast.makeText(this, "Erro de conexão: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            } finally {
-                try {
-                    parceiro?.receba(PedidoParaSair())
-                    outputStream?.close()
-                    inputStream?.close()
-                    socket?.close()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }.start()
-    }
-
-    private fun navigateToLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            socket?.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun comeBack(){
+    // Função para retornar à tela de início
+    private fun comeBack() {
         val intent = Intent(this, Inicio::class.java)
         startActivity(intent)
     }
 
-    private fun goToLogin(){
+    // Função para navegar para a tela de login
+    private fun goToLogin() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }

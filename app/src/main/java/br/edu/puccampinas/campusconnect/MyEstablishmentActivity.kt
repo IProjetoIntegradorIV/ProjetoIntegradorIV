@@ -20,15 +20,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
-import br.edu.puccampinas.campusconnect.data.model.UserIdResponse
-import br.edu.puccampinas.campusconnect.data.network.ApiService
 import br.edu.puccampinas.campusconnect.databinding.ActivityMyEstablishmentBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+// Declara variáveis globais usadas na classe
 private lateinit var binding: ActivityMyEstablishmentBinding
 private lateinit var productAdapter: ProductAdapter
 private lateinit var recyclerView: RecyclerView
@@ -43,6 +41,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         binding = ActivityMyEstablishmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Define os listeners para botões de logout e perfil
         binding.logout.setOnClickListener {
             logout()
         }
@@ -55,6 +54,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
+        // Obtém o ID do usuário logado e busca dados adicionais
         loggedUserEmail?.let { fetchUserIdByEmail(it) }
         fetchUserData()
 
@@ -62,6 +62,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Define listeners para edição de dados do estabelecimento
         binding.editName.setOnClickListener {
             changeEstablishmentName()
         }
@@ -78,6 +79,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
             changeEstablishmentPhoto()
         }
 
+        // Define listeners para exclusão e criação de estabelecimento e produtos
         binding.delete.setOnClickListener {
             showPopup()
         }
@@ -91,6 +93,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Obtém o ID do usuário logado com base no email
     fun fetchUserIdByEmail(email: String) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -105,6 +108,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Obtém o ID do estabelecimento associado ao usuário
     private fun fetchEstablishmentId(userId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -132,7 +136,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
-
+    // Busca os produtos do estabelecimento
     private fun fetchProducts(establishmentId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -154,6 +158,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Busca detalhes do estabelecimento e exibe na interface
     private fun fetchEstablishmentDetails(establishmentId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -162,6 +167,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val establishment = response.body()!!
 
+                        //Torna visíveis as Views de alteração e exclusão
                         binding.establishmentPhoto.visibility = View.VISIBLE
                         binding.name.visibility = View.VISIBLE
                         binding.description.visibility = View.VISIBLE
@@ -189,6 +195,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Exibe os detalhes do estabelecimento
     private fun displayEstablishmentDetails(establishment: Establishment) {
         binding.name.hint = establishment.name
         binding.description.hint = establishment.description
@@ -196,10 +203,12 @@ class MyEstablishmentActivity : AppCompatActivity() {
         Glide.with(this).load(establishment.photo).into(binding.establishmentPhoto)
     }
 
+    // Exibe as mensagens Toast na tela
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
+    // Realiza logout do usuário
     private fun logout() {
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         with(sharedPref.edit()) {
@@ -210,11 +219,13 @@ class MyEstablishmentActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    // Navega para a tela de perfil
     private fun profile() {
         val intent = Intent(this,ProfileActivity::class.java)
         startActivity(intent)
     }
 
+    // Funções para alterar o nome do estabelecimento
     private fun changeEstablishmentName() {
         val name = binding.name.text.toString()
 
@@ -249,6 +260,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Funções para alterar a descrição do estabelecimento
     private fun changeEstablishmentDescription() {
         val description = binding.description.text.toString()
 
@@ -283,6 +295,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Funções para alterar o horário de funcionamento do estabelecimento
     private fun changeEstablishmentOpeningHours() {
         val openingHours = binding.openingHours.text.toString()
 
@@ -317,6 +330,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Funções para alterar a foto do estabelecimento
     private fun changeEstablishmentPhoto() {
         val photo = binding.etPhoto.text.toString()
 
@@ -351,6 +365,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Exibe um popup de confirmação antes de deletar o estabelecimento
     private fun showPopup() {
         val dialogView = layoutInflater.inflate(R.layout.pop_up, null)
         val builder = AlertDialog.Builder(this)
@@ -382,6 +397,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // Deleta o estabelecimento
     private fun deleteEstablishment() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -404,16 +420,19 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Navega para a tela de criação de estabelecimento
     private fun createEstablishment(){
         val intent = Intent(this, CreateEstablishmentActivity::class.java)
         startActivity(intent)
     }
 
+    // Navega para a tela de criação de produto
     private fun createProduct(){
         val intent = Intent(this, CreateProductActivity::class.java)
         startActivity(intent)
     }
 
+    // Busca dados do usuário e exibe na tela
     private fun fetchUserData() {
         val email = loggedUserEmail ?: run {
             Toast.makeText(this, "Email do usuário não encontrado!", Toast.LENGTH_SHORT).show()
