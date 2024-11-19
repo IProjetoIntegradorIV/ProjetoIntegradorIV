@@ -93,6 +93,7 @@ class Inicio : AppCompatActivity() {
                 if (response.isSuccessful) {
                     Log.i(TAG, "Login successful")
                     Toast.makeText(this@Inicio, "Login bem-sucedido. Seja bem-vindo!", Toast.LENGTH_SHORT).show()
+                    redirectEstEstablishment()
                 } else {
                     Log.e(TAG, "Failed to authenticate: ${response.errorBody()?.string()}")
                     Toast.makeText(this@Inicio, "Falha na autenticação. Tente novamente.", Toast.LENGTH_SHORT).show()
@@ -106,6 +107,10 @@ class Inicio : AppCompatActivity() {
         })
     }
 
+    private fun redirectEstEstablishment() {
+        val intent = Intent(this, EstablishmentActivity::class.java)
+        startActivity(intent)
+    }
 
     private fun loginEmailActivity(){
         val intent = Intent(this, LoginActivity::class.java)

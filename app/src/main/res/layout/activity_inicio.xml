@@ -31,7 +31,9 @@
             android:textSize="22sp"
             android:textColor="@color/blue"
             android:textStyle="bold"
-            android:layout_marginBottom="70dp"/>
+            android:layout_marginBottom="70dp"
+            android:textAlignment="center"
+            />
 
 
         <TextView
