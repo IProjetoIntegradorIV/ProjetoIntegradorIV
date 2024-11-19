@@ -175,4 +175,9 @@ interface ApiService {
         @Body product: Product
     ): Response<ResponseMessage>
 
+    @PUT("api/users/changeUserPhoto")
+    suspend fun changeUserPhoto(
+        @Query("userId") userId: String,
+        @Query("newPhoto") newPhoto: String
+    ): Response<ResponseMessage>
 }

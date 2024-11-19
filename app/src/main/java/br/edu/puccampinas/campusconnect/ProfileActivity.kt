@@ -35,8 +35,9 @@ import java.io.FileOutputStream
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
-    private val PICK_IMAGE_REQUEST = 1
     private var loggedUserEmail: String? = null
+    private var userId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -44,7 +45,6 @@ class ProfileActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
-        //loadProfileImage()
         fetchUserData()
 
         binding = ActivityProfileBinding.inflate(layoutInflater)
@@ -62,10 +62,8 @@ class ProfileActivity : AppCompatActivity() {
             changeName()
         }
 
-        binding.imgPencil2.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        binding.editPhoto.setOnClickListener {
+            changeUserPhoto()
         }
 
         binding.btnUpdate.setOnClickListener {
@@ -84,9 +82,15 @@ class ProfileActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val user = response.body()
                     user?.let {
+                        userId = it.id
                         binding.tvEmail.setText(it.email)
                         binding.etName.setText(it.name)
                         binding.tvPassword.setText(it.password)
+                        if(it.photo != null){
+                        Glide.with(this@ProfileActivity)
+                            .load(it.photo)
+                            .circleCrop()
+                            .into(binding.imgLogo)}
                     }
                 } else {
                     Log.e("ProfileActivity", "Erro ao buscar dados do usuário: ${response.errorBody()?.string()}")
@@ -99,6 +103,40 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.makeText(this@ProfileActivity, "Erro na conexão.", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun changeUserPhoto() {
+        val photo = binding.etPhoto.text.toString()
+
+        if (TextUtils.isEmpty(photo)) {
+            Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Verifica se o ID do usuário existe
+        userId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeUserPhoto(it, photo)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Log.d("ProfileActivity", "Foto alterada com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProfileActivity, "User photo updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("ProfileActivity", "Erro ao mudar a foto: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProfileActivity, "Error changing the photo.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("ProfileActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProfileActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun changeName() {
@@ -193,93 +231,6 @@ class ProfileActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            val imageUri = data.data
-            imageUri?.let {
-                saveImageToDatabase(it)
-            }
-        }
-    }
-
-    private fun saveImageToDatabase(imageUri: Uri) {
-        val inputStream = contentResolver.openInputStream(imageUri)
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-
-        // Crie um arquivo temporário para enviar com a chamada da API
-        val tempFile = File.createTempFile("image", ".png", cacheDir)
-        tempFile.writeBytes(byteArray)
-
-        val requestFile = RequestBody.create(MediaType.parse("image/png"), tempFile)
-        val body = MultipartBody.Part.createFormData("file", tempFile.name, requestFile)
-
-        loggedUserEmail?.let { email ->
-            val emailRequestBody = RequestBody.create(MediaType.parse("text/plain"), email)
-            updateProfileImage(emailRequestBody, body)
-        } ?: run {
-            Toast.makeText(this, "Erro: email do usuário não encontrado", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun updateProfileImage(email: RequestBody, imageFile: MultipartBody.Part) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = RetrofitInstance.api.updateProfileImage(email, imageFile)
-                if (response.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ProfileActivity, "Imagem atualizada com sucesso!", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ProfileActivity, "Erro ao atualizar imagem", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ProfileActivity, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-/*
-    private fun loadProfileImage() {
-        loggedUserEmail?.let { email ->
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val response = RetrofitInstance.api.getProfileImage(email)
-                    if (response.isSuccessful) {
-                        val imageUrl = response.body()
-                        if (imageUrl != null) {
-                            withContext(Dispatchers.Main) {
-                                Glide.with(this@ProfileActivity)
-                                    .load(imageUrl)
-                                    .into(binding.imgLogo)
-                            }
-                        } else {
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@ProfileActivity, "Nenhuma imagem de perfil encontrada.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@ProfileActivity, "Erro ao carregar a imagem de perfil: ${response.message()}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@ProfileActivity, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
-    */
     private fun fetchIsEstablishmentOwner(email: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {

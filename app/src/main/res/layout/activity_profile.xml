@@ -34,6 +34,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="118dp"
+        android:layout_height="100dp"
+        android:src="@drawable/perfil"
+        android:layout_gravity="center"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,14 +48,25 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
 
-        <ImageView
-            android:id="@+id/img_logo"
-            android:layout_width="118dp"
-            android:layout_height="100dp"
-            android:src="@drawable/perfil" />
+        <EditText
+            android:id="@+id/etPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textSize="15sp"
+            android:hint="@string/url_da_foto"
+            android:background="@drawable/borda"
+            android:inputType="textEmailAddress"
+            android:layout_gravity="center"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
+            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:drawableTint="@color/blue"
+            android:drawablePadding="10dp" />
 
         <ImageView
-            android:id="@+id/img_pencil2"
+            android:id="@+id/editPhoto"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/baseline_edit_24"
@@ -56,15 +74,12 @@
 
     </LinearLayout>
 
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_marginTop="10dp">
-
 
         <EditText
             android:id="@+id/etName"
@@ -90,9 +105,6 @@
             android:layout_marginStart="5dp"/>
 
     </LinearLayout>
-
-
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -132,8 +144,6 @@
         android:textColor="@color/yellow"
         android:textStyle="bold"/>
 
-
-
         <TextView
             android:id="@+id/tvPassword"
             android:layout_width="350dp"
@@ -151,7 +161,6 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             />
-
 
     <TextView
         android:layout_width="wrap_content"

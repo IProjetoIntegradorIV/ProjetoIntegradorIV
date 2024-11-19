@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
+import br.edu.puccampinas.campusconnect.data.model.User
 import br.edu.puccampinas.campusconnect.data.model.UserIdResponse
 import br.edu.puccampinas.campusconnect.data.network.ApiService
 import br.edu.puccampinas.campusconnect.databinding.ActivityMyEstablishmentBinding
@@ -55,6 +56,7 @@ class MyEstablishmentActivity : AppCompatActivity() {
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
         loggedUserEmail?.let { fetchUserIdByEmail(it) }
+        fetchUserData()
 
         // Configura o RecyclerView
         recyclerView = binding.recyclerView
@@ -410,5 +412,35 @@ class MyEstablishmentActivity : AppCompatActivity() {
     private fun createProduct(){
         val intent = Intent(this, CreateProductActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun fetchUserData() {
+        val email = loggedUserEmail ?: run {
+            Toast.makeText(this, "Email do usuário não encontrado!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        RetrofitInstance.api.getUserByEmail(email).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if (response.isSuccessful) {
+                    val user = response.body()
+                    user?.let {
+                        if(it.photo != null){
+                        Glide.with(this@MyEstablishmentActivity)
+                            .load(it.photo)
+                            .circleCrop()
+                            .into(binding.profile)}
+                    }
+                } else {
+                    Log.e("MyEstablishmentActivity", "Erro ao buscar dados do usuário: ${response.errorBody()?.string()}")
+                    Toast.makeText(this@MyEstablishmentActivity, "Erro ao carregar dados do usuário.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.e("MyEstablishmentActivity", "Falha na requisição: ${t.message}")
+                Toast.makeText(this@MyEstablishmentActivity, "Erro na conexão.", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
