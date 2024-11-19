@@ -331,5 +331,4 @@ class ProductActivity : AppCompatActivity() {
             }
         }
     }
-
 }

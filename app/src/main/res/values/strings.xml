@@ -82,5 +82,21 @@
     <string name="excluir_produto">Tem certeza que deseja excluir esse produto?</string>
     <string name="excluir">Excluir</string>
     <string name="cadastrar_produto">Cadastrar produto</string>
+    <string name="cadastre_estabelecimento">Cadastre seu estabelecimento</string>
+    <string name="nome_estabelecimento">Nome do estabelecimento</string>
+    <string name="digite_nome_estabelecimento">Digite o nome do estabelecimento</string>
+    <string name="cnpj">CNPJ</string>
+    <string name="digite_cnpj">Digite seu CNPJ</string>
+    <string name="descricao">Descrição</string>
+    <string name="digite_descricao">Descrição (máximo 100 caracteres)</string>
+    <string name="digite_horario_funcionamento">Horário de funcionamento (HH:MM-HH:MM)</string>
+    <string name="horario_funcionamento">Horário de funcionamento</string>
+    <string name="url_foto">URL da foto</string>
+    <string name="url_foto_cole">Digite a URL da foto</string>
+    <string name="price">Preço</string>
+    <string name="digite_price">Digite o preço (R$00,00)</string>
+    <string name="cadastre_seu_produto">Cadastre seu produto</string>
+    <string name="produto_nome">Nome do produto</string>
+    <string name="digite_produto_nome">Digite o nome do produto</string>
 
 </resources>

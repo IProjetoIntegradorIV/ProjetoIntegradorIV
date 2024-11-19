@@ -79,6 +79,14 @@ class MyEstablishmentActivity : AppCompatActivity() {
         binding.delete.setOnClickListener {
             showPopup()
         }
+
+        binding.btnRegister.setOnClickListener {
+            createEstablishment()
+        }
+
+        binding.btnAddProduct.setOnClickListener {
+            createProduct()
+        }
     }
 
     fun fetchUserIdByEmail(email: String) {
@@ -394,4 +402,13 @@ class MyEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    private fun createEstablishment(){
+        val intent = Intent(this, CreateEstablishmentActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun createProduct(){
+        val intent = Intent(this, CreateProductActivity::class.java)
+        startActivity(intent)
+    }
 }

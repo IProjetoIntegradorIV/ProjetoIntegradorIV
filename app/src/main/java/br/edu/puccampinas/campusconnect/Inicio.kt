@@ -81,6 +81,8 @@ class Inicio : AppCompatActivity() {
                 sendIdTokenGoogleApi(googleIdToken)
             } catch (e: GetCredentialException) {
                 Toast.makeText(this@Inicio, "Erro ao realizar o login com o google: ${e.message}", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "Failed to authenticate: ${e.message}")
+
             }
         }
     }

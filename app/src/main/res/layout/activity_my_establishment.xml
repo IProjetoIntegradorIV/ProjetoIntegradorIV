@@ -224,12 +224,11 @@
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="@string/cadastrar_estabelecimento"
         android:textColor="@color/blue"
-        android:textSize="25sp"
-        android:layout_gravity="center"
-        />
+        android:textSize="25sp" />
 
     <Button
         android:id="@+id/btnRegister"

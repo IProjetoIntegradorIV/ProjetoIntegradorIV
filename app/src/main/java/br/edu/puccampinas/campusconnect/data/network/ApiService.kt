@@ -168,4 +168,11 @@ interface ApiService {
     suspend fun searchEstablishments(
         @Query("name") name: String
     ): Response<List<Establishment>>
+
+    @POST("api/users/createProduct")
+    @Headers("Accept: application/json")
+    suspend fun createProduct(
+        @Body product: Product
+    ): Response<ResponseMessage>
+
 }
