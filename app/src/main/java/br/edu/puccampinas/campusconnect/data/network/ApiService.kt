@@ -38,37 +38,25 @@ interface ApiService {
         @Body request: LoginGoogleRequest
     ): Call<Void>
 
-    @POST("api/users")
+    @POST("api/users/createUser")
     @Headers("Accept: application/json")
     fun createUser(
         @Body user: User
     ): Call<ResponseMessage>
 
-    @GET("api/users/establishments")
+    @GET("api/establishment/establishments")
     suspend fun getEstablishments(
     ): Response<List<Establishment>>
 
-    @GET("api/users/establishments/{establishmentId}/products")
+    @GET("api/product/establishments/{establishmentId}/products")
     suspend fun getProductsByEstablishment(
         @Path("establishmentId") establishmentId: String
     ): Response<List<Product>>
 
-    @GET("api/users/establishments/{id}")
+    @GET("api/establishment/establishments/{id}")
     suspend fun getEstablishmentById(
         @Path("id") id: String
     ): Response<Establishment>
-
-    @Multipart
-    @PUT("api/users/updateProfileImage")
-    suspend fun updateProfileImage(
-        @Part("email") email: RequestBody,
-        @Part file: MultipartBody.Part
-    ): Response<ResponseMessage>
-
-    @GET("api/users/profileImage")
-    suspend fun getProfileImage(
-        @Query("email") email: String
-    ): Response<String>
 
     @PUT("api/users/changePassword")
     fun changePassword(
@@ -97,7 +85,7 @@ interface ApiService {
         @Query("email") email: String
     ): UserIdResponse
 
-    @GET("api/users/establishments/owner/{userId}")
+    @GET("api/establishment/establishments/owner/{userId}")
     suspend fun getEstablishmentIdByOwnerId(
         @Path("userId") userId: String
     ): Response<Map<String, String>>
@@ -107,70 +95,70 @@ interface ApiService {
         @Query("email") email: String
     ): Response<Map<String, Boolean>>
 
-    @PUT("api/users/changeEstablishmentName")
+    @PUT("api/establishment/changeEstablishmentName")
     suspend fun changeEstablishmentName(
         @Query("establishmentId") establishmentId: String,
         @Query("newName") newName: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeEstablishmentDescription")
+    @PUT("api/establishment/changeEstablishmentDescription")
     suspend fun changeEstablishmentDescription(
         @Query("establishmentId") establishmentId: String,
         @Query("newDescription") newDescription: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeEstablishmentOpeningHours")
+    @PUT("api/establishment/changeEstablishmentOpeningHours")
     suspend fun changeEstablishmentOpeningHours(
         @Query("establishmentId") establishmentId: String,
         @Query("newOpeningHours") newOpeningHours: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeEstablishmentPhoto")
+    @PUT("api/establishment/changeEstablishmentPhoto")
     suspend fun changeEstablishmentPhoto(
         @Query("establishmentId") establishmentId: String,
         @Query("newPhoto") newPhoto: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeProductName")
+    @PUT("api/product/changeProductName")
     suspend fun changeProductName(
         @Query("productId") productId: String,
         @Query("newName") newName: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeProductDescription")
+    @PUT("api/product/changeProductDescription")
     suspend fun changeProductDescription(
         @Query("productId") productId: String,
         @Query("newDescription") newDescription: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeProductPrice")
+    @PUT("api/product/changeProductPrice")
     suspend fun changeProductPrice(
         @Query("productId") productId: String,
         @Query("newPrice") newPrice: String
     ): Response<ResponseMessage>
 
-    @PUT("api/users/changeProductPhoto")
+    @PUT("api/product/changeProductPhoto")
     suspend fun changeProductPhoto(
         @Query("productId") productId: String,
         @Query("newPhoto") newPhoto: String
     ): Response<ResponseMessage>
 
-    @DELETE("api/users/products/{productId}")
+    @DELETE("api/product/products/{productId}")
     suspend fun deleteProductById(
         @Path("productId") productId: String
     ): Response<ResponseMessage>
 
-    @DELETE("api/users/establishment/{establishmentId}")
+    @DELETE("api/establishment/establishment/{establishmentId}")
     suspend fun deleteEstablishmentById(
         @Path("establishmentId") establishmentId: String
     ): Response<ResponseMessage>
 
-    @GET("api/users/establishments/search")
+    @GET("api/establishment/establishments/search")
     suspend fun searchEstablishments(
         @Query("name") name: String
     ): Response<List<Establishment>>
 
-    @POST("api/users/createProduct")
+    @POST("api/product/createProduct")
     @Headers("Accept: application/json")
     suspend fun createProduct(
         @Body product: Product
@@ -182,22 +170,21 @@ interface ApiService {
         @Query("newPhoto") newPhoto: String
     ): Response<ResponseMessage>
 
-    @POST("/api/users/evaluate")
+    @POST("/api/evaluation/evaluate")
     suspend fun submitEvaluation(
         @Query("userId") userId: String,
         @Query("productId") productId: String,
         @Query("rating") rating: Float
     ): Response<ResponseMessage>
 
-    @GET("/api/users/evaluations/{productId}")
+    @GET("/api/evaluation/evaluations/{productId}")
     suspend fun getEvaluationsByProductId(
         @Path("productId") productId: String
     ): Response<List<Evaluate>>
 
-    @PUT("api/users/changeProductEvaluation")
+    @PUT("api/product/changeProductEvaluation")
     suspend fun changeProductEvaluation(
         @Query("productId") productId: String,
         @Query("newEvaluation") newEvaluation: String
     ): Response<ResponseMessage>
-
 }
