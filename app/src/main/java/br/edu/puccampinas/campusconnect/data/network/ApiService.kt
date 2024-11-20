@@ -1,6 +1,7 @@
 package br.edu.puccampinas.campusconnect.data.network
 
 import br.edu.puccampinas.campusconnect.data.model.Establishment
+import br.edu.puccampinas.campusconnect.data.model.Evaluate
 import br.edu.puccampinas.campusconnect.data.model.LoginGoogleRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginResponse
@@ -180,4 +181,23 @@ interface ApiService {
         @Query("userId") userId: String,
         @Query("newPhoto") newPhoto: String
     ): Response<ResponseMessage>
+
+    @POST("/api/users/evaluate")
+    suspend fun submitEvaluation(
+        @Query("userId") userId: String,
+        @Query("productId") productId: String,
+        @Query("rating") rating: Float
+    ): Response<ResponseMessage>
+
+    @GET("/api/users/evaluations/{productId}")
+    suspend fun getEvaluationsByProductId(
+        @Path("productId") productId: String
+    ): Response<List<Evaluate>>
+
+    @PUT("api/users/changeProductEvaluation")
+    suspend fun changeProductEvaluation(
+        @Query("productId") productId: String,
+        @Query("newEvaluation") newEvaluation: String
+    ): Response<ResponseMessage>
+
 }

@@ -98,5 +98,7 @@
     <string name="cadastre_seu_produto">Cadastre seu produto</string>
     <string name="produto_nome">Nome do produto</string>
     <string name="digite_produto_nome">Digite o nome do produto</string>
+    <string name="avalie_produto">Avalie o produto</string>
+    <string name="avalie">Avalie</string>
 
 </resources>

@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
@@ -18,11 +18,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.DecimalFormat
 
 private lateinit var binding: ActivityProductBinding
 private lateinit var establishmentId: String
 private lateinit var productId: String
 private var loggedUserEmail: String? = null
+private var userId: String? = null
 
 class ProductActivity : AppCompatActivity() {
 
@@ -36,6 +38,8 @@ class ProductActivity : AppCompatActivity() {
         // Recupera o email do usuário logado
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
+
+        loggedUserEmail?.let { fetchUserIdByEmail(it) }
 
         // Verifica se o usuário é proprietário do estabelecimento
         loggedUserEmail?.let { fetchIsEstablishmentOwner(it) }
@@ -88,6 +92,25 @@ class ProductActivity : AppCompatActivity() {
         binding.delete.setOnClickListener {
             showPopup()  // Exibe o pop-up de confirmação de exclusão
         }
+
+        binding.btnEvaluate.setOnClickListener {
+            showEvaluatePopup()
+        }
+    }
+
+    // Função que recupera o ID do usuário logado
+    fun fetchUserIdByEmail(email: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val userIdResponse = withContext(Dispatchers.IO) {
+                    RetrofitInstance.api.getUserIdByEmail(email)
+                }
+                userId = userIdResponse.userId
+            } catch (e: Exception) {
+                Log.e("fetchUserIdByEmail", "Erro: ${e.message}", e)
+                showToast("Erro: ${e.message}")
+            }
+        }
     }
 
     // Função que verifica se o usuário é o proprietário do estabelecimento
@@ -129,7 +152,7 @@ class ProductActivity : AppCompatActivity() {
         binding.name.visibility = View.GONE
         binding.description.visibility = View.GONE
         binding.price.visibility = View.GONE
-        binding.heartIcon.visibility = View.GONE
+        binding.btnEvaluate.visibility = View.GONE
         binding.etname.visibility = View.VISIBLE
         binding.editName.visibility = View.VISIBLE
         binding.etdescription.visibility = View.VISIBLE
@@ -331,6 +354,141 @@ class ProductActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    // Exibe o pop-up de avaliação do produto
+    private fun showEvaluatePopup() {
+        val dialogView = layoutInflater.inflate(R.layout.pop_up_rating, null)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+
+        builder.setCancelable(true)
+
+        val dialog = builder.create()
+
+        dialog.setOnCancelListener {
+            dialog.dismiss()
+        }
+
+        val btnClose = dialogView.findViewById<ImageView>(R.id.btnClose)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        val btnEvaluate = dialogView.findViewById<Button>(R.id.btnEvaluate)
+        val ratingBar = dialogView.findViewById<RatingBar>(R.id.ratingBar) // Encontre o RatingBar
+
+        // Variável para armazenar o valor das estrelas
+        var ratingValue: Float = 0f
+
+        btnEvaluate.setOnClickListener {
+            // Quando o botão de avaliar for clicado, recupera o valor das estrelas
+            ratingValue = ratingBar.rating
+
+            // Exemplo de como salvar o valor em uma variável (pode ser salva ou enviada)
+            Log.d("EvaluatePopup", "Número de estrelas selecionadas: $ratingValue")
+
+            // Aqui você pode salvar o ratingValue em uma variável global, SharedPreferences ou até mesmo enviá-lo para a API
+            dialog.dismiss() // Fecha o pop-up
+            userId?.let { it1 -> submitEvaluation(it1, productId,ratingValue) }
+            binding.btnEvaluate.visibility = View.GONE
+        }
+
+        dialog.show()
+    }
+
+
+    // Função para submeter a avaliação
+    private fun submitEvaluation(userId: String, productId: String, rating: Float) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Faz a requisição para submeter a avaliação
+                val response = RetrofitInstance.api.submitEvaluation(userId, productId, rating)
+
+                // Verifique se a requisição foi bem-sucedida
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        // Se a avaliação for salva com sucesso, busca as avaliações e calcula a média
+                        Log.d("Evaluate", "Avaliação salva com sucesso.")
+                        getEvaluationsAndCalculateAverage(productId)
+                    } else {
+                        Toast.makeText(this@ProductActivity, "Falha ao submeter a avaliação.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@ProductActivity, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    //Função para calacular a média das avaliações do produto
+    private fun getEvaluationsAndCalculateAverage(productId: String) {
+        // Inicia uma corrotina para fazer a requisição
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                // Faz a requisição para buscar todas as avaliações do produto
+                val response = RetrofitInstance.api.getEvaluationsByProductId(productId)
+
+                // Verifique a resposta
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        // Obtemos a lista de avaliações
+                        val evaluations = response.body()
+
+                        // Se houver avaliações, calculamos a média
+                        evaluations?.let {
+                            val averageRating = it.map { evaluate -> evaluate.rating }.average()
+
+                            // Formatar a média com uma casa decimal
+                            val decimalFormat = DecimalFormat("#.#")
+                            val formattedAverage = decimalFormat.format(averageRating)
+
+                            Log.d("AverageRating", "A média das avaliações é: $formattedAverage")
+                            // Exiba a média de alguma forma, por exemplo, em um TextView
+                            changeProductEvaluation(formattedAverage)
+                        }
+                    } else {
+                        Toast.makeText(this@ProductActivity, "Falha ao buscar avaliações.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@ProductActivity, "Erro: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    //Função para salvar no banco a nova avaliação média
+    private fun changeProductEvaluation(evaluation:String) {
+        // Verifica se o ID do produto existe
+        productId?.let {
+            // Lançando uma Coroutine para executar a função suspensa
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitInstance.api.changeProductEvaluation(it, evaluation)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            // Se a atualização for bem-sucedida, exibe uma mensagem
+                            Log.d("ProductActivity", "Avaliação alterada com sucesso: ${response.body()?.message}")
+                            Toast.makeText(this@ProductActivity, "Product evaluation updated successfully.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Se houver erro na requisição, exibe uma mensagem de erro
+                            Log.e("ProductActivity", "Erro ao mudar a avaliação: ${response.errorBody()?.string()}")
+                            Toast.makeText(this@ProductActivity, "Error changing the evaluation.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("ProductActivity", "Falha na requisição: ${e.message}")
+                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     // Função para excluir o produto
