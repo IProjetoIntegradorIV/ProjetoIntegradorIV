@@ -12,6 +12,8 @@ import androidx.credentials.exceptions.GetCredentialException
 import br.edu.puccampinas.campusconnect.data.model.LoginGoogleRequest
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityInicioBinding
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.CoroutineScope
@@ -23,133 +25,178 @@ import retrofit2.Response
 import java.security.MessageDigest
 import java.util.UUID
 
-// Classe de atividade inicial que permite login via Google ou email, além de navegação para cadastro.
 class Inicio : AppCompatActivity() {
-
-    // Declaração do binding para vincular os elementos de layout ao código
-    private lateinit var binding: ActivityInicioBinding
-    private val coroutineScope = CoroutineScope(Dispatchers.Main) // Escopo para operações assíncronas no contexto principal
+    private lateinit var binding: ActivityInicioBinding // View Binding para acessar os elementos da UI.
+    private val coroutineScope = CoroutineScope(Dispatchers.Main) // Escopo de corrotinas para operações assíncronas na UI.
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityInicioBinding.inflate(layoutInflater) // Inicializa o binding com o layout
-        setContentView(binding.root)
+        binding = ActivityInicioBinding.inflate(layoutInflater) // Inicializa o binding.
+        setContentView(binding.root) // Define a raiz do layout.
 
-        // Define o listener para o botão de login com Google
+        // Configura o botão de login com Google.
         binding.btnLoginGoogle.setOnClickListener {
-            loginGoogle()
+            if (checkGooglePlayServices()) { // Verifica se os serviços do Google Play estão disponíveis.
+                loginGoogle()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Google Play Services não está disponível ou atualizado. Atualize para continuar.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
-        // Define o listener para o botão de login com email
+        // Configura o botão de login com e-mail.
         binding.btnLoginEmail.setOnClickListener {
             loginEmailActivity()
         }
 
-        // Define o listener para o botão de registro
+        // Configura o botão de cadastro.
         binding.register.setOnClickListener {
             cadastrar()
         }
     }
 
-    // Função para iniciar o login com Google usando CredentialManager
+    // Função para realizar login com Google usando CredentialManager.
     @SuppressLint("CoroutineCreationDuringComposition")
     private fun loginGoogle() {
-        // Cria uma instância do CredentialManager para gerenciar as credenciais
-        val credentialManager = CredentialManager.create(this)
+        val credentialManager = CredentialManager.create(this) // Instancia o gerenciador de credenciais.
 
-        // Gera um nonce seguro para a autenticação
+        // Gera um nonce aleatório e o converte para SHA-256.
         val rawNonce = UUID.randomUUID().toString()
         val bytes = rawNonce.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         val hashedNonce = digest.fold("") { str, it -> str + "%02x".format(it) }
 
-        // Configura as opções de autenticação com o Google
+        // Configura as opções de login do Google.
         val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(BuildConfig.GOOGLE_CLIENT_ID)
-            .setNonce(hashedNonce)
+            .setFilterByAuthorizedAccounts(false) // Permite contas não autorizadas.
+            .setServerClientId(BuildConfig.GOOGLE_CLIENT_ID) // ID do cliente do servidor.
+            .setNonce(hashedNonce) // Nonce para maior segurança.
             .build()
 
-        // Cria a solicitação de credenciais para o login com Google
+        // Configura a solicitação de credenciais.
         val request: GetCredentialRequest = GetCredentialRequest.Builder()
             .addCredentialOption(googleIdOption)
             .build()
 
-        // Lança uma coroutine para realizar o login de forma assíncrona
+        // Realiza a chamada assíncrona para obter credenciais.
         coroutineScope.launch {
             try {
-                // Obtém a credencial do usuário
                 val result = credentialManager.getCredential(
                     request = request,
                     context = this@Inicio
                 )
 
-                // Extrai o ID token da credencial do Google
+                // Obtém o token de ID do Google.
                 val credential = result.credential
                 val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                 val googleIdToken = googleIdTokenCredential.idToken
 
-                Log.i(TAG, googleIdToken)
-
-                // Envia o token de ID para o backend
-                sendIdTokenGoogleApi(googleIdToken)
+                Log.i(TAG, googleIdToken) // Loga o token.
+                sendIdTokenGoogleApi(googleIdToken) // Envia o token para a API.
             } catch (e: GetCredentialException) {
-                // Trata erros de obtenção de credencial
-                Toast.makeText(this@Inicio, "Erro ao realizar o login com o google: ${e.message}", Toast.LENGTH_SHORT).show()
-                Log.e(TAG, "Failed to authenticate: ${e.message}")
+                Toast.makeText(
+                    this@Inicio,
+                    "Erro ao realizar o login com o Google: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    // Função para enviar o token de ID do Google ao backend
+    // Envia o token de ID do Google para a API para autenticação.
     private fun sendIdTokenGoogleApi(idToken: String) {
-        val loginGoogleRequest = LoginGoogleRequest(idToken) // Cria a requisição de login com o ID token
+        val loginGoogleRequest = LoginGoogleRequest(idToken) // Cria o objeto de requisição.
 
-        // Faz uma chamada assíncrona à API para autenticação com o token do Google
+        // Faz a chamada para a API usando Retrofit.
         RetrofitInstance.api.loginUserGoogle(loginGoogleRequest).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     Log.i(TAG, "Login successful")
                     Toast.makeText(this@Inicio, "Login bem-sucedido. Seja bem-vindo!", Toast.LENGTH_SHORT).show()
-
-                    // Redireciona o usuário para a atividade de estabelecimentos
-                    redirectEstEstablishment()
+                    redirectEstEstablishment() // Redireciona para a próxima tela.
                 } else {
-                    // Trata falhas de autenticação
                     Log.e(TAG, "Failed to authenticate: ${response.errorBody()?.string()}")
                     Toast.makeText(this@Inicio, "Falha na autenticação. Tente novamente.", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                // Trata erros na conexão com a API
                 Log.e(TAG, "API call failed: ${t.message}")
                 Toast.makeText(this@Inicio, "Falha na autenticação. Tente novamente.", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    // Função para redirecionar o usuário para a activity de estabelecimentos após login
+    // Redireciona o usuário para a tela de estabelecimentos após o login.
     private fun redirectEstEstablishment() {
         val intent = Intent(this, EstablishmentActivity::class.java)
         startActivity(intent)
     }
 
-    // Função para redirecionar para a activity de login por email
-    private fun loginEmailActivity(){
+    // Inicia a atividade de login com e-mail.
+    private fun loginEmailActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 
-    // Função para redirecionar para a activity de cadastro
-    private fun cadastrar(){
+    // Inicia a atividade de cadastro de novo usuário.
+    private fun cadastrar() {
         val intent = Intent(this, CreateAccountActivity::class.java)
         startActivity(intent)
     }
 
-    // Declaração de uma constante para uso como tag de log
+    // Verifica se o Google Play Services está disponível no dispositivo.
+    private fun checkGooglePlayServices(): Boolean {
+        val googleApiAvailability = GoogleApiAvailability.getInstance()
+        val status = googleApiAvailability.isGooglePlayServicesAvailable(this)
+
+        return when (status) {
+            ConnectionResult.SUCCESS -> true // Serviços disponíveis.
+            ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED -> {
+                showPlayServicesUpdateDialog(googleApiAvailability)
+                false
+            }
+            ConnectionResult.SERVICE_MISSING, ConnectionResult.SERVICE_DISABLED -> {
+                showPlayServicesErrorDialog(googleApiAvailability, status)
+                false
+            }
+            else -> {
+                Toast.makeText(
+                    this,
+                    "Este dispositivo não suporta os serviços do Google Play.",
+                    Toast.LENGTH_LONG
+                ).show()
+                false
+            }
+        }
+    }
+
+    // Mostra o diálogo para atualizar o Google Play Services.
+    private fun showPlayServicesUpdateDialog(googleApiAvailability: GoogleApiAvailability) {
+        googleApiAvailability.makeGooglePlayServicesAvailable(this).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Toast.makeText(
+                    this,
+                    "Por favor, atualize o Google Play Services para continuar.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    // Mostra um diálogo de erro caso os serviços do Google Play estejam desativados ou ausentes.
+    private fun showPlayServicesErrorDialog(
+        googleApiAvailability: GoogleApiAvailability,
+        status: Int
+    ) {
+        googleApiAvailability.getErrorDialog(this, status, 9000)?.show()
+    }
+
     companion object {
-        const val TAG = "LoginActivity"
+        const val TAG = "LoginActivity" // Tag usada para logs.
     }
 }
