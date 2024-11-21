@@ -1,17 +1,12 @@
-package br.edu.puccampinas.campusconnect;
+package br.edu.puccampinas.campusconnect
 
-public class Resultado extends Comunicado {
-    private String valorResultante;
+import java.io.Serializable
 
-    public Resultado(String valorResultante){
-        this.valorResultante = valorResultante;
-    }
-
-    public String getValorResultante() {
-        return this.valorResultante;
-    }
-
-    public String toString(){
-        return (""+this.valorResultante);
+class Resultado(
+    val mensagem: String,
+    val erros: List<String>? = null
+) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 8556072105244890025L
     }
 }
