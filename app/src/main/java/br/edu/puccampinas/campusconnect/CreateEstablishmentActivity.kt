@@ -2,11 +2,14 @@ package br.edu.puccampinas.campusconnect
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import br.edu.puccampinas.campusconnect.databinding.ActivityCreateEstablishmentBinding
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,11 +19,18 @@ import java.net.Socket
 
 class CreateEstablishmentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateEstablishmentBinding
+    private var loggedUserEmail: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateEstablishmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        loggedUserEmail = sharedPref.getString("logged_user_email", null)
+
+        loggedUserEmail?.let { fetchUserIdByEmail(it) }
 
         // Botão de registro
         binding.btnRegister.setOnClickListener {
@@ -38,7 +48,11 @@ class CreateEstablishmentActivity : AppCompatActivity() {
 
             // Envio ao servidor
             lifecycleScope.launch {
-                enviarDadosParaServidor(cnpj, name, photo, description, openingHours)
+                userId?.let { it1 ->
+                    enviarDadosParaServidor(cnpj, name, photo, description, openingHours,
+                        it1
+                    )
+                }
             }
         }
 
@@ -53,6 +67,18 @@ class CreateEstablishmentActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun fetchUserIdByEmail(email: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val userIdResponse = withContext(Dispatchers.IO) {
+                    RetrofitInstance.api.getUserIdByEmail(email)
+                }
+                userId = userIdResponse.userId
+            } catch (e: Exception) {
+                Log.e("fetchUserIdByEmail", "Erro: ${e.message}", e)
+            }
+        }
+    }
 
     private fun exibirResultado(mensagem: String, erros: List<String>?) {
         if (erros.isNullOrEmpty()) {
@@ -78,7 +104,8 @@ class CreateEstablishmentActivity : AppCompatActivity() {
         name: String,
         photo: String,
         description: String,
-        openingHours: String
+        openingHours: String,
+        ownerId: String
     ) = withContext(Dispatchers.IO) {
         try {
             // Conectar ao servidor na porta 4000
@@ -94,7 +121,8 @@ class CreateEstablishmentActivity : AppCompatActivity() {
                 name,
                 photo,
                 description,
-                openingHours
+                openingHours,
+                ownerId
             )
             outputStream.writeObject(estabelecimento)
             outputStream.flush()
