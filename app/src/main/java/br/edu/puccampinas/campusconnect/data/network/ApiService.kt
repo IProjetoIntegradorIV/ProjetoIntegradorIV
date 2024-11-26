@@ -1,6 +1,6 @@
 package br.edu.puccampinas.campusconnect.data.network
 
-import br.edu.puccampinas.campusconnect.data.model.Establishment
+import br.edu.puccampinas.campusconnect.Establishment
 import br.edu.puccampinas.campusconnect.data.model.Evaluate
 import br.edu.puccampinas.campusconnect.data.model.LoginGoogleRequest
 import br.edu.puccampinas.campusconnect.data.model.LoginRequest
@@ -9,19 +9,14 @@ import br.edu.puccampinas.campusconnect.data.model.Product
 import br.edu.puccampinas.campusconnect.data.model.ResponseMessage
 import br.edu.puccampinas.campusconnect.data.model.User
 import br.edu.puccampinas.campusconnect.data.model.UserIdResponse
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
-import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 

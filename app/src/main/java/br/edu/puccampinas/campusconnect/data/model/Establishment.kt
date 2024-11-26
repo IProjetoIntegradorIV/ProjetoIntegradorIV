@@ -1,21 +1,26 @@
-package br.edu.puccampinas.campusconnect.data.model
+package br.edu.puccampinas.campusconnect
 
+import java.io.Serializable
 
-class Establishment {
-    var id: String? = null
-    var name: String? = null
-    var description: String? = null
-    var openingHours: String? = null
-    var photo: String? = null
-    var ownerId: String? = null
+class Establishment(
+    var id: String? = null,
+    var cnpj: String,
+    var name: String,
+    var description: String,
+    var openingHours: String,
+    var photo: String,
+    var ownerId: String
+) : Serializable {
+    constructor(
+        cnpj: String,
+        name: String,
+        description: String,
+        openingHours: String,
+        photo: String,
+        ownerId: String
+    ) : this(null, cnpj, name, description, openingHours, photo, ownerId)
 
-    constructor()
-
-    constructor(name: String?, description: String?, openingHours: String?, photo: String?, ownerId: String?) {
-        this.name = name
-        this.description = description
-        this.openingHours = openingHours
-        this.photo = photo
-        this.ownerId = ownerId
+    companion object {
+        private const val serialVersionUID: Long = 2511790574004449845L
     }
 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import br.edu.puccampinas.campusconnect.data.model.Establishment
 import com.bumptech.glide.Glide
 
 // Adapter para exibir a lista de estabelecimentos em um RecyclerView

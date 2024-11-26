@@ -4,7 +4,6 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.edu.puccampinas.campusconnect.data.model.Establishment
 import br.edu.puccampinas.campusconnect.data.network.RetrofitInstance
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope

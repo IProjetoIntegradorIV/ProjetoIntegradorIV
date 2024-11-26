@@ -19,6 +19,7 @@ import java.net.Socket
 
 class CreateEstablishmentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateEstablishmentBinding
+    // Variáveis para armazenar o email do usuário logado e seu ID
     private var loggedUserEmail: String? = null
     private var userId: String? = null
 
@@ -27,29 +28,32 @@ class CreateEstablishmentActivity : AppCompatActivity() {
         binding = ActivityCreateEstablishmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Recupera o email do usuário logado das shared preferences
         val sharedPref = getSharedPreferences("user_prefs", MODE_PRIVATE)
         loggedUserEmail = sharedPref.getString("logged_user_email", null)
 
+        // Obtém o ID do usuário com base no email
         loggedUserEmail?.let { fetchUserIdByEmail(it) }
 
         // Botão de registro
         binding.btnRegister.setOnClickListener {
+            // Obtém os valores digitados pelo usuário nos campos de entrada
             val cnpj = binding.etCnpj.text.toString()
             val name = binding.etName.text.toString()
             val photo = binding.etPhoto.text.toString()
             val description = binding.etDescription.text.toString()
             val openingHours = binding.etOpeningHours.text.toString()
 
-            // Validação básica
+            // Validação básica para verificar se todos os campos foram preenchidos
             if (cnpj.isEmpty() || name.isEmpty() || photo.isEmpty() || description.isEmpty() || openingHours.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Envio ao servidor
+            // Envio dos dados ao servidor usando corrotinas
             lifecycleScope.launch {
                 userId?.let { it1 ->
-                    enviarDadosParaServidor(cnpj, name, photo, description, openingHours,
+                    sendDataToServer(cnpj, name, photo, description, openingHours,
                         it1
                     )
                 }
@@ -62,25 +66,29 @@ class CreateEstablishmentActivity : AppCompatActivity() {
         }
     }
 
+    // Função que navega de volta para a tela de "Meu Estabelecimento"
     private fun comeBack() {
         val intent = Intent(this, MyEstablishmentActivity::class.java)
         startActivity(intent)
     }
 
+    // Busca o ID do usuário pelo email, chamando um endpoint da API
     fun fetchUserIdByEmail(email: String) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                // Faz a requisição na thread de IO para evitar bloqueios
                 val userIdResponse = withContext(Dispatchers.IO) {
                     RetrofitInstance.api.getUserIdByEmail(email)
                 }
-                userId = userIdResponse.userId
+                userId = userIdResponse.userId // Armazena o ID do usuário retornado
             } catch (e: Exception) {
                 Log.e("fetchUserIdByEmail", "Erro: ${e.message}", e)
             }
         }
     }
 
-    private fun exibirResultado(mensagem: String, erros: List<String>?) {
+    // Exibe o resultado (sucesso ou erro) para o usuário
+    private fun showResults(mensagem: String, erros: List<String>?) {
         if (erros.isNullOrEmpty()) {
             // Exibe a mensagem de sucesso no Toast
             Toast.makeText(this@CreateEstablishmentActivity, mensagem, Toast.LENGTH_LONG).show()
@@ -98,8 +106,8 @@ class CreateEstablishmentActivity : AppCompatActivity() {
         }
     }
 
-    // Função para enviar os dados ao servidor
-    private suspend fun enviarDadosParaServidor(
+    // Função que envia os dados do estabelecimento ao servidor via Socket
+    private suspend fun sendDataToServer(
         cnpj: String,
         name: String,
         photo: String,
@@ -116,22 +124,23 @@ class CreateEstablishmentActivity : AppCompatActivity() {
             val inputStream = ObjectInputStream(socket.getInputStream())
 
             // Criar um objeto Estabelecimento e enviar para o servidor
-            val estabelecimento = Estabelecimento(
+            val estabelecimento = Establishment(
                 cnpj,
                 name,
-                photo,
                 description,
                 openingHours,
+                photo,
                 ownerId
             )
-            outputStream.writeObject(estabelecimento)
+            outputStream.writeObject(estabelecimento) // Envia o objeto
             outputStream.flush()
 
+            // Lê a resposta do servidor
             val resposta = inputStream.readObject()
             if (resposta is Resultado) {
                 // Exibe a mensagem de resposta
                 runOnUiThread {
-                    exibirResultado(resposta.mensagem, resposta.erros)
+                    showResults(resposta.mensagem, resposta.erros)
                 }
             } else {
                 println("Objeto recebido não é do tipo Resultado.")
