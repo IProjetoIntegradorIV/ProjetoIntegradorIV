@@ -31,7 +31,8 @@ interface ApiService {
     @Headers("Accept: application/json")
     fun loginUserGoogle(
         @Body request: LoginGoogleRequest
-    ): Call<Void>
+    ): Call<String>
+
 
     @POST("api/users/createUser")
     @Headers("Accept: application/json")

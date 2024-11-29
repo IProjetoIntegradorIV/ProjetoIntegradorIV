@@ -1,6 +1,7 @@
 package br.edu.puccampinas.campusconnect
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -109,26 +110,38 @@ class Inicio : AppCompatActivity() {
 
     // Envia o token de ID do Google para a API para autenticação.
     private fun sendIdTokenGoogleApi(idToken: String) {
-        val loginGoogleRequest = LoginGoogleRequest(idToken) // Cria o objeto de requisição.
+        val loginGoogleRequest = LoginGoogleRequest(idToken)
 
-        // Faz a chamada para a API usando Retrofit.
-        RetrofitInstance.api.loginUserGoogle(loginGoogleRequest).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+        RetrofitInstance.api.loginUserGoogle(loginGoogleRequest).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful) {
-                    Log.i(TAG, "Login successful")
+                    val email = response.body() ?: return
+                    Log.i(TAG, "Login bem-sucedido com email: $email")
+
+                    // Salva o email do usuário
+                    saveUserEmail(email)
+
                     Toast.makeText(this@Inicio, "Login bem-sucedido. Seja bem-vindo!", Toast.LENGTH_SHORT).show()
-                    redirectEstEstablishment() // Redireciona para a próxima tela.
+                    redirectEstEstablishment()
                 } else {
-                    Log.e(TAG, "Failed to authenticate: ${response.errorBody()?.string()}")
+                    Log.e(TAG, "Falha na autenticação: ${response.errorBody()?.string()}")
                     Toast.makeText(this@Inicio, "Falha na autenticação. Tente novamente.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.e(TAG, "API call failed: ${t.message}")
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e(TAG, "Erro na chamada à API: ${t.message}")
                 Toast.makeText(this@Inicio, "Falha na autenticação. Tente novamente.", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun saveUserEmail(email: String) {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("logged_user_email", email)
+            apply()
+        }
     }
 
     // Redireciona o usuário para a tela de estabelecimentos após o login.
