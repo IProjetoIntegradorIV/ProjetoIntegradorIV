@@ -21,36 +21,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginStart="15dp"
+            android:orientation="vertical"
+            android:maxWidth="200dp"
+            android:paddingVertical="8dp">
 
             <TextView
                 android:id="@+id/nameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30dp"
+                android:maxWidth="200dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="aaaaaaaaaaa"
+                android:text="Estabelecimento"
                 android:textColor="@color/blue"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"/>
+                />
 
             <TextView
                 android:id="@+id/descriptionTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22dp"
-                android:text="aaaaaaaaaaaaa"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"/>
+                android:maxWidth="200dp"
+                android:text="Desc. estabelecimento"
+                android:textSize="22sp"
+                android:paddingTop="8dp"
+                />
 
             <TextView
                 android:id="@+id/openingHoursTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22dp"
-                android:text="aaaaaaaaaaaa"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"/>
+                android:maxWidth="200dp"
+                android:text="11:11-22:22"
+                android:textSize="22sp"
+                android:paddingTop="8dp"
+                />
 
         </LinearLayout>
 

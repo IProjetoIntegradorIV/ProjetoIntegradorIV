@@ -46,9 +46,7 @@ class ProductActivity : AppCompatActivity() {
 
         // Configura o botão de voltar para a tela anterior
         binding.comeBack.setOnClickListener {
-            val intent = Intent(this, nextActivityClass)
-            intent.putExtra("establishmentId", establishmentId)
-            startActivity(intent)
+            comeBack() // Volta para a tela anterior
         }
 
         // Obtém os dados do produto passados pela Intent
@@ -461,7 +459,7 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
-    //Função para salvar no banco a nova avaliação média
+    // Função para salvar no banco a nova avaliação média
     private fun changeProductEvaluation(evaluation:String) {
         // Verifica se o ID do produto existe
         productId?.let {
@@ -474,17 +472,20 @@ class ProductActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             // Se a atualização for bem-sucedida, exibe uma mensagem
                             Log.d("ProductActivity", "Avaliação alterada com sucesso: ${response.body()?.message}")
-                            Toast.makeText(this@ProductActivity, "Product evaluation updated successfully.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProductActivity, "Produto avaliado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                            // Volta a tela de produtos após a avalição ser computada
+                            comeBack()
                         } else {
                             // Se houver erro na requisição, exibe uma mensagem de erro
                             Log.e("ProductActivity", "Erro ao mudar a avaliação: ${response.errorBody()?.string()}")
-                            Toast.makeText(this@ProductActivity, "Error changing the evaluation.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProductActivity, "Erro ao avaliar o produto! Tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Log.e("ProductActivity", "Falha na requisição: ${e.message}")
-                        Toast.makeText(this@ProductActivity, "Connection error.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ProductActivity, "Erro ao avaliar o produto! Tente novamente mais tarde.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -512,5 +513,12 @@ class ProductActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    // Função para voltar a tela anterior
+    private fun comeBack() {
+        val intent = Intent(this, nextActivityClass)
+        intent.putExtra("establishmentId", establishmentId)
+        startActivity(intent)
     }
 }

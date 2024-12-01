@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -33,7 +35,9 @@
         android:layout_marginTop="20dp"
         android:text="@string/estabelecimentos"
         android:textColor="@color/blue"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/description"
@@ -60,11 +64,15 @@
         android:layout_marginTop="20dp"
         android:text="@string/produtos"
         android:textColor="@color/blue"
-        android:textSize="25sp"/>
+        android:textSize="25sp"
+        android:textStyle="bold"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        />
 </LinearLayout>

@@ -210,6 +210,6 @@ class Inicio : AppCompatActivity() {
     }
 
     companion object {
-        const val TAG = "LoginActivity" // Tag usada para logs.
+        const val TAG = "InicioActivity" // Tag usada para logs.
     }
 }

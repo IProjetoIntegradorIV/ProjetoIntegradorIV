@@ -21,40 +21,44 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginStart="15dp"
+            android:orientation="vertical"
+            android:maxWidth="200dp"
+            android:paddingVertical="8dp"
+            >
 
             <TextView
                 android:id="@+id/productName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30dp"
+                android:maxWidth="200dp"
+                android:textSize="30sp"
                 android:textStyle="bold"
-                android:text="aaaaaaaaaaa"
+                android:text="Nome produto"
                 android:textColor="@color/blue"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"/>
+                />
 
             <TextView
                 android:id="@+id/productDescription"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="22dp"
-                android:text="aaaaaaaaaaaaa"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"/>
+                android:maxWidth="200dp"
+                android:text="Descrição produto"
+                android:textSize="22sp"
+                android:paddingTop="8dp"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp">
+                android:maxWidth="200dp"
+                >
 
                 <ImageView
                     android:id="@+id/heart_icon"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:scaleType="centerCrop"
                     android:src="@drawable/baseline_favorite_border_24"
                     />
 
@@ -62,22 +66,25 @@
                     android:id="@+id/productEvaluation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22dp"
-                    android:text="aaaaaa"
-                    android:layout_gravity="center"/>
+                    android:textSize="22sp"
+                    android:text="5.0"
+                    android:layout_gravity="center"
+                    />
 
                 <TextView
                     android:id="@+id/productPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22dp"
-                    android:text="aaaaaa"
+                    android:text="R$ 10,00"
                     android:layout_marginStart="30dp"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>

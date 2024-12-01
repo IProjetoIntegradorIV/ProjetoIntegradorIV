@@ -3,7 +3,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="8dp"
+    >
 
     <TextView
         android:id="@+id/come_back"
@@ -11,7 +13,7 @@
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/ic_voltar"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:drawableTint="@color/blue"/>
 
     <ImageView
@@ -19,7 +21,7 @@
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:src="@drawable/logo_sem_fundo"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/ic_login"
@@ -30,14 +32,14 @@
         android:textStyle="bold"
         android:textColor="@color/blue"
         android:drawableStart="@drawable/ic_login"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:drawableTint="@color/yellow"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cadastre_se_com_suas_informa_es_abaixo"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/blue"
         android:textSize="15sp"/>
@@ -46,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="@string/voce_e"
         android:textSize="17sp"
@@ -54,11 +56,10 @@
         android:textStyle="bold"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         >
 
         <CheckBox
@@ -82,9 +83,9 @@
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="@string/nome"
         android:textSize="17sp"
@@ -93,8 +94,9 @@
 
     <EditText
         android:id="@+id/etName"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="8dp"
         android:hint="@string/digite_seu_nome_completo"
         android:background="@drawable/borda"
         android:textSize="15sp"
@@ -110,9 +112,9 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="@string/email"
         android:textSize="17sp"
@@ -121,8 +123,9 @@
 
     <EditText
         android:id="@+id/etEmail"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="8dp"
         android:hint="@string/digite_seu_e_mail"
         android:background="@drawable/borda"
         android:layout_marginTop="8dp"
@@ -139,9 +142,9 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:text="@string/senha"
         android:textSize="17sp"
@@ -157,8 +160,9 @@
 
         <EditText
             android:id="@+id/etPassword"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
             android:hint="@string/digite_sua_senha"
             android:textSize="15sp"
             android:background="@drawable/borda"
@@ -176,9 +180,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:text="@string/confirmar_senha"
         android:textSize="17sp"
@@ -193,8 +197,9 @@
 
         <EditText
             android:id="@+id/etConfimPassword"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginHorizontal="8dp"
             android:hint="@string/confirme_sua_senha"
             android:textSize="15sp"
             android:background="@drawable/borda"
