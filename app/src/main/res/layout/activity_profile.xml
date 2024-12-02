@@ -93,6 +93,7 @@
             android:textColorHint="@color/gray"
             android:textColor="@color/black"
             android:drawableTint="@color/blue"
+            android:paddingHorizontal="12dp"
             />
 
         <ImageView
@@ -123,6 +124,7 @@
         android:layout_marginTop="8dp"
         android:textSize="14sp"
         android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="10dp"
         android:textColorHint="@color/gray"
         android:textColor="@color/gray"
         android:drawableTint="@color/blue"
@@ -155,10 +157,9 @@
             android:textColorHint="@color/gray"
             android:textColor="@color/gray"
             android:drawableTint="@color/blue"
-            android:paddingLeft="15dp"
-            android:paddingStart="15dp"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
+            android:padding="12dp"
             />
 
     <TextView
@@ -169,7 +170,8 @@
         android:text="@string/nova_senha"
         android:textSize="16sp"
         android:textColor="@color/yellow"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -190,9 +192,9 @@
             android:textColorHint="@color/gray"
             android:textColor="@color/gray"
             android:drawableTint="@color/blue"
-            android:paddingLeft="15dp"
-            android:paddingStart="15dp"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            android:padding="12dp"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -225,9 +227,9 @@
             android:textColorHint="@color/gray"
             android:textColor="@color/gray"
             android:drawableTint="@color/blue"
-            android:paddingLeft="15dp"
-            android:paddingStart="15dp"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp"
+            android:padding="12dp"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

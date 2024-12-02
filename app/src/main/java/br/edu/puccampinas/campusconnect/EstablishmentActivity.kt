@@ -57,10 +57,6 @@ class EstablishmentActivity : AppCompatActivity() {
             }
         }
 
-        // Configura os botões de navegação para outras Activities
-        binding.comeBack.setOnClickListener {
-            comeBack()
-        }
         binding.profile.setOnClickListener {
             profile()
         }

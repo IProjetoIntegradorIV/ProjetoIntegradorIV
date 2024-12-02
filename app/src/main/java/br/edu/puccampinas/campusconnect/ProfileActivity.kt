@@ -119,7 +119,7 @@ class ProfileActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             Log.d("ProfileActivity", "Foto alterada com sucesso: ${response.body()?.message}")
-                            Toast.makeText(this@ProfileActivity, "User photo updated successfully.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ProfileActivity, "Foto atualizada com sucesso!", Toast.LENGTH_SHORT).show()
                         } else {
                             Log.e("ProfileActivity", "Erro ao mudar a foto: ${response.errorBody()?.string()}")
                             Toast.makeText(this@ProfileActivity, "Error changing the photo.", Toast.LENGTH_SHORT).show()

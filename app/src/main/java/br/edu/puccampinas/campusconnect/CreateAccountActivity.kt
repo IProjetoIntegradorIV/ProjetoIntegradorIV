@@ -115,7 +115,7 @@ class CreateAccountActivity : AppCompatActivity() {
                 // Verifica se a resposta foi bem-sucedida
                 if (response.isSuccessful || response.code() == 201) {
                     val message = response.body()?.message ?: "Mensagem não disponível"
-                    Toast.makeText(this@CreateAccountActivity, message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateAccountActivity, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show()
 
                     // Navega para a tela de login após o registro bem-sucedido
                     goToLogin()

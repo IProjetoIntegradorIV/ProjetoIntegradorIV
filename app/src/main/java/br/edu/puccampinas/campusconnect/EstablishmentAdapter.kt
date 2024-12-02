@@ -35,8 +35,12 @@ class EstablishmentAdapter(private val establishments: List<Establishment>) :
 
         // Define os dados do estabelecimento nos elementos de UI do ViewHolder
         holder.nameTextView.text = establishment.name
-        holder.descriptionTextView.text = establishment.description
         holder.openingHoursTextView.text = establishment.openingHours
+        holder.descriptionTextView.text = if (establishment.description.length > 100) {
+            "${establishment.description.substring(0, 50)}..."
+        } else {
+            establishment.description
+        }
 
         // Usa Glide para carregar a imagem da URL e aplicar um corte circular
         Glide.with(holder.itemView.context)
